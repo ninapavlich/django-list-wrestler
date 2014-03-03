@@ -1,0 +1,2 @@
+include README.md
+recursive-include django_inline_orderable *.py *.css *.js

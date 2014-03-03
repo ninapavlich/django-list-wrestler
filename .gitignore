@@ -1,0 +1,13 @@
+*.o
+*.pyc
+*.pyo
+*.tmp
+.*.swp
+.*.swo
+*~
+.DS_Store
+.sass-cache/
+*.egg-info/
+dist/
+inline_orderable_testing_db
+venv/

@@ -1,4 +1,4 @@
 django-inline-orderable
 =======================
 
-Make django inline lists easier to organize with jQuery and Grappelli.
+Make django inline lists easier to sort with jQuery and Grappelli.

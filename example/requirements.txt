@@ -1,0 +1,5 @@
+Django
+South
+distribute
+django-appconf
+django-grappelli

@@ -1,5 +1,6 @@
 .ordering-buttons{
 	margin-bottom:5px;
+	width:120px;
 }
 
 
@@ -18,22 +19,23 @@
 	background-color:#ddd;					
 }
 .ordering-buttons input.drag{
-	background-position: 0px -2742px; 
+
+	background-position: 0px -2732px; 
 	-webkit-border-radius: 5px;
 	border-radius: 5px;	
+	height:40px;
+	margin-top:20px;
 	
 }
 .ordering-buttons input.drag.disabled{
-	background-position: 0px -2262px; 
+	background-position: 0px -2252px; 
 	cursor: default;
 }
 .ordering-buttons input.move_top{					
 	background-position: 0px -2000px; 
 
-	-webkit-border-radius: 0px 5px 5px 0px;
-	border-radius: 0px 5px 5px 0px;
-
-	margin-left:-5px;
+	-webkit-border-radius: 5px 5px 0px 0px;
+	border-radius: 5px 5px 0px 0px;
 	
 }
 .ordering-buttons input.move_top.disabled{
@@ -47,8 +49,7 @@
 
 	-webkit-border-radius: 0;
 	border-radius: 0;	
-	margin-left:-5px;	
-	border-right:0;	
+	border-top:0;	
 }
 .ordering-buttons input.move_up.disabled{
 	background-position: 0px -2830px; 
@@ -59,9 +60,7 @@
 
 	-webkit-border-radius: 0;
 	border-radius: 0;
-	margin-left:-5px;
-	border-left:0;
-	border-right:0;				
+	border-top:0;			
 }
 .ordering-buttons input.move_down.disabled{
 	background-position: 0px -2479px;
@@ -69,17 +68,23 @@
 }
 .ordering-buttons input.move_bottom{
 	background-position: 0px -1955px;
-	-webkit-border-radius: 5px 0px 0px 5px;	
-	border-radius: 5px 0px 0px 5px;						
+	-webkit-border-radius: 0px 0px 5px 5px;	
+	border-radius: 0px 0px 5px 5px;		
+
+	border-top:0px;				
 	
 }
 .ordering-buttons input.move_bottom.disabled{
 	background-position: 0px -1912px;
 	cursor: default;
 }
+.ordering-buttons .jump-container{
+	margin-top:25px;
+}
 .ordering-buttons input.new_value{
 	width:30px;
-	height:20px;
+	height:30px;
+
 	font-size:11px;
 	text-align: right;
 	-webkit-border-radius: 5px 0px 0px 5px;	
@@ -88,14 +93,17 @@
 	margin-right:-4px;
 }
 .ordering-buttons input.apply_new_value{
+
+
 	-webkit-border-radius: 0px 5px 5px 0px;
 	border-radius: 0px 5px 5px 0px;
 	
-	background-position: 0px -1335px; 
+	background-position: 0px -1331px; 
 	width:24px;
+	height:30px;
 }
 .ordering-buttons input.apply_new_value.disabled{
-	background-position: 0px -1292px; 
+	background-position: 0px -1288px; 
 	cursor: default;
 }
 .ordering-buttons input.original_value{
@@ -110,6 +118,19 @@
 	margin-left:5px;
 	border-right:0;	
 
+}
+
+.ordering-buttons input.move_bottom, 
+.ordering-buttons input.move_down,
+.ordering-buttons input.move_up,
+.ordering-buttons input.move_top{
+	display:block;
+}
+.ordering-buttons .drag-container,
+.ordering-buttons .move-container,
+.ordering-buttons .jump-container{
+	float:left;
+	margin-right: 5px;
 }
 
 .list-item-initialized .ordering-buttons + input{

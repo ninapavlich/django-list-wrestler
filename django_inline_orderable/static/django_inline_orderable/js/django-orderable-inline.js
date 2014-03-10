@@ -538,20 +538,24 @@ django.jQuery(document).ready(function() {
         }
         this._initListItemEvents = function() {
             var parent_reference = this;
+
+
             $(this._buttonContainer).find("input.drag").bind("mousedown", function(e){
-                e.preventDefault();
-                parent_reference.parent_list.startDrag(parent_reference, e);
+                if(e.which == 1){
+                    //left clicked
+                    e.preventDefault();
+                    parent_reference.parent_list.startDrag(parent_reference, e);
 
-                $('body').bind("mousemove", function(e){
-                    parent_reference.parent_list.moveDrag(parent_reference, e);
-                });
+                    $('body').bind("mousemove", function(e){
+                        parent_reference.parent_list.moveDrag(parent_reference, e);
+                    });
 
-                $('body').bind("mouseup", function(e){
-                    $('body').unbind("mousemove");
-                    $('body').unbind("mouseup");
-                    parent_reference.parent_list.stopDrag(parent_reference, e);
-                });
-
+                    $('body').bind("mouseup", function(e){
+                        $('body').unbind("mousemove");
+                        $('body').unbind("mouseup");
+                        parent_reference.parent_list.stopDrag(parent_reference, e);
+                    });
+                }
             });
 
             $(this._buttonContainer).find("input.move_top").bind("click", function(e){
@@ -673,13 +677,19 @@ django.jQuery(document).ready(function() {
         }
         this._createButtons = function(){
             return '<div class="ordering-buttons">\
-                <input type="button" title="Drag element" class="drag" value="Drag">\
-                <input type="button" title="Move to bottom" class="move_bottom" value="To Bottom">\
-                <input type="button" title="Move down" class="move_down" value="Move Down">\
-                <input type="button" title="Move up" class="move_up" value="Move Up">\
-                <input type="button" title="Move to top" class="move_top" value="To Top">\
-                <input type="text" class="new_value" name="New Value" value="">\
-                <input type="button" title="Move to this position" class="apply_new_value" value="Move to this position">\
+                <div class="drag-container">\
+                    <input type="button" title="Drag element" class="drag" value="Drag">\
+                </div>\
+                <div class="move-container">\
+                    <input type="button" title="Move to top" class="move_top" value="To Top">\
+                    <input type="button" title="Move up" class="move_up" value="Move Up">\
+                    <input type="button" title="Move down" class="move_down" value="Move Down">\
+                    <input type="button" title="Move to bottom" class="move_bottom" value="To Bottom">\
+                </div>\
+                <div class="jump-container">\
+                    <input type="text" class="new_value" name="New Value" value="">\
+                    <input type="button" title="Move to this position" class="apply_new_value" value="Move to this position">\
+                </div>\
                 <input type="text" class="readonly original_value" name="Original Value" value="" readonly="readonly">\
                 \
             </div>'

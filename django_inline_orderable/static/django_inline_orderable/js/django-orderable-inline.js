@@ -1,4 +1,6 @@
-django.jQuery(document).ready(function() {
+//author:nina@cgpartnersllc.com
+;django.jQuery(document).ready(function() {
+
     //Initialize Form:
     //Go through list in the form, and if not already initialized, initialize it.
 
@@ -57,23 +59,26 @@ django.jQuery(document).ready(function() {
         //PUBLIC FUNCTIONS //////////////
         /////////////////////////////////
         this.getVersion = function(){
-            return '2.0';
+            return '2.1';
         }
         
         this.moveToTop = function(item){
             //console.log("moveToTop")
+            item.notEmpty();
             item.setPosition(-1);
 
             this.updateList();
         }
         this.moveToBottom = function(item){
             //console.log("moveToBottom")
+            item.notEmpty();
             item.setPosition(this.list_items.length);
 
            this.updateList();
         }
         this.moveUp = function(item){
             
+            item.notEmpty();
             previous_index = Math.max(0, item.getPosition()-1);
             current_index = item.getPosition();
             //console.log("move item from "+item.getPosition()+" to "+previous_index)
@@ -81,13 +86,14 @@ django.jQuery(document).ready(function() {
             previous_item.setPosition(current_index);
             item.setPosition(previous_index);
 
-           
 
             this.updateList();
             
         }
         this.moveDown = function(item){
             //console.log("moveDown")
+
+            item.notEmpty();
             next_index = Math.min(this.list_items.length-1, item.getPosition()+1);
             current_index = item.getPosition();
 
@@ -102,6 +108,8 @@ django.jQuery(document).ready(function() {
             this.updateList();
         }
         this.moveTo = function(item, index){
+
+            item.notEmpty();
             
             if (index == item.getPosition()){
                 //console.log("same index. ignore.")
@@ -117,6 +125,9 @@ django.jQuery(document).ready(function() {
             this.updateList();
         }
         this.startDrag = function(item, e){
+
+            item.notEmpty();
+
             this._pauseInterval();
             this.drag_offset_y = e.pageY - $(item._buttonContainer).offset().top;
             this.drag_offset_x = e.pageX - $(item._buttonContainer).offset().left;
@@ -216,6 +227,14 @@ django.jQuery(document).ready(function() {
             this._startResizeInterval();
 
         };
+        this._clearEmpties = function(){
+
+            for(var k=0; k<this.list_items.length; k++){
+                var list_item = this.list_items[k];
+                list_item.notEmpty();
+            } 
+
+        }
         this._pauseInterval = function(restart_time){
             clearInterval(this.realign_interval)
             var parent_reference = this;
@@ -244,7 +263,9 @@ django.jQuery(document).ready(function() {
             $(container).find(".grp-add-handler").bind("click", function(e){
 
                 setTimeout(function(){
-                    parent_reference._initList(parent_reference._container, parent_reference.options);                    
+                    parent_reference._initList(parent_reference._container, parent_reference.options);     
+                    parent_reference._clearEmpties();
+
                 },100)
                 
             })
@@ -267,6 +288,7 @@ django.jQuery(document).ready(function() {
             }
         }
         this._sortItems = function(){
+            
             
             //first go through and sort items by order
             this.list_items.sort(function(a,b){
@@ -294,14 +316,16 @@ django.jQuery(document).ready(function() {
                 if(apos >= bpos) return 1;
                 return -1;
             });
-                
 
+            
             //then go through and "repair" any gaps or problems
             counter = 0
             for(var k=0; k<this.list_items.length; k++){
                 var list_item = this.list_items[k];
                 list_item.setPosition(counter++);                                    
-            }            
+            }
+
+                       
         }
         this._sortItemsByTop = function(item, apply_update){
             if(typeof apply_update == "undefined"){
@@ -410,11 +434,18 @@ django.jQuery(document).ready(function() {
         /////////////////////////////////
         //PUBLIC FUNCTIONS //////////////
         /////////////////////////////////
-        this.setPosition = function(value){
+        this.setPosition = function(value, immediate){
+            if(typeof immediate == "undefined"){
+                immediate = false
+            }
+
             this._previousPosition = this._position;
             this._position = value;
-            this._requestUpdate();
-            $(this._inputChangeContainer).val(this._position+1);
+            this._requestUpdate(immediate);
+            if(this.isEmpty() == false){
+                $(this._inputChangeContainer).val(this._position+1);
+            }
+            
             //console.log("setPosition = "+value+" original = "+this._originalPosition)
         }
         this.getPosition = function(){
@@ -467,6 +498,9 @@ django.jQuery(document).ready(function() {
         this.isEmpty = function(){
             return this._hasValue == false;
         }
+        this.notEmpty = function(){
+            this._hasValue = true;
+        }
         this.destroy = function(){
             //Remove Styles
             this._removeStyles();
@@ -515,6 +549,7 @@ django.jQuery(document).ready(function() {
 
         }
         this._initContent = function(item){
+            
             this._positionContainer = $(item).find(".grp-td."+this.options['order_by']);
             this._inputContainer = $(this._positionContainer).find('input:text')[0];
 
@@ -531,7 +566,11 @@ django.jQuery(document).ready(function() {
             
             this._originalPosition = this._position;
             $(this._originalPositionContainer).val(this._originalPosition)
-            $(this._inputChangeContainer).val(this._originalPosition)
+
+            if(this.isEmpty() == false){
+                $(this._inputChangeContainer).val(this._originalPosition)    
+            }
+            
         }
         this._removeContent = function(){
             $(this._buttonContainer).remove();
@@ -575,7 +614,7 @@ django.jQuery(document).ready(function() {
                 parent_reference.parent_list.moveToBottom(parent_reference);
             });
 
-            $(this._buttonContainer).find("input.apply_new_value").bind("click", function(e){
+            $(this._buttonContainer).find("input.apply_new_value").bind("mousedown", function(e){
                 e.preventDefault();
                 parent_reference._applyInputValue();                
             });

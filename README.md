@@ -6,6 +6,9 @@ Make django inline lists easier to sort with jQuery and Grappelli.
 
 ![Screenshot of Django inline items](/../master/docs/screenshots/screenshot.png?raw=true "Screenshot of Tabular Inline Items")
 
+Usage
+=====
+
 ```python
 from django_inline_orderable.admin import TabularInlineOrderable
 

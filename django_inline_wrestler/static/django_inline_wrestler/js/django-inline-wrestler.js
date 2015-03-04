@@ -929,7 +929,7 @@
     /* INITIALIZATION */
     $.init_orderable_admin_lists = function(config) { //Using only one method off of $.fn  
         
-        app_name = "django-orderable-inline";
+        app_name = "django-inline-wrestler";
         all_elements = $(document).find("."+app_name);
         //console.log("FOUND "+all_elements.length+" items with class name: "+app_name)
         //for each element, check to see if it has been initialized

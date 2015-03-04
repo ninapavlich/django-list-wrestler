@@ -20,7 +20,7 @@ Usage
 =====
 
 ```python
-from django_inline_orderable.admin import TabularInlineOrderable
+from django_inline_wrestler.admin import TabularInlineOrderable
 
 from .models import *
 
@@ -35,5 +35,5 @@ class SubItemInline(TabularInlineOrderable):
 	prepopulated_fields = {'txtid': ('name',)}
 	
 	#To override which field is used for ordering, add a class starting with order-by-[fieldname]. Make sure to also include
-	classes = ['django-orderable-inline', 'order-by-position']
+	classes = ['django-inline-wrestler', 'order-by-position']
 ```

@@ -3,8 +3,18 @@ django-inline-orderable
 
 Make django inline lists easier to sort with jQuery and Grappelli.
 
+This plugin turns an ordinary order field into a high-powered sorting tool including:
+* Drag-and-Drop
+* Jump to Top and Jump to Bottom buttons
+* Jump one up and Jump one bottom
+* Send directly to a position in the list
+* Adjust table headers so they line up with the actual columns
+* Make table headers sortable, so you can sort by a particular field (supports sorting by text inputs, text areas, check boxes, image uploads, and fks)
+* Positioning order buttons anywhere in the table
 
 ![Screenshot of Django inline items](/../master/docs/screenshots/screenshot.png?raw=true "Screenshot of Tabular Inline Items")
+
+![Screenshot of Django inline items](/../master/docs/screenshots/sort_by_columns.png?raw=true "Screenshot of Tabular Inline Items")
 
 Usage
 =====

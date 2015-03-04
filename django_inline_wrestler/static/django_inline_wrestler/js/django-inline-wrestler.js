@@ -59,7 +59,7 @@
         //PUBLIC FUNCTIONS //////////////
         /////////////////////////////////
         this.getVersion = function(){
-            return '3.0';
+            return '3.1';
         }
         
         this.moveToTop = function(item){

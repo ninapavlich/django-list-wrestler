@@ -59,7 +59,7 @@
         //PUBLIC FUNCTIONS //////////////
         /////////////////////////////////
         this.getVersion = function(){
-            return '2.1';
+            return '3.0';
         }
         
         this.moveToTop = function(item){
@@ -209,6 +209,8 @@
                     var new_id = this.id+"_"+(this.list_items.length);
                     var component = new $.orderable_admin_list_item(list_item, new_id, this, options); 
                     
+                    this.moveToBottom(component);
+
                     $(list_item).addClass( 'list-item-initialized' );  
                     $(list_item).addClass( new_id );
 
@@ -254,19 +256,25 @@
             }, this.realign_interval_duration)
         }
         this._initListStyles = function(container){
-            this._listContainer = $(this._container).find(".grp-module.grp-table")
-            this._listContainerHeader = $(this._listContainer).find(".grp-thead")
-            this._listContainerHeaderHeight = $(this._listContainerHeader).height()
+            this._listContainer = $(this._container).find(".grp-module.grp-table");
+            this._listContainerHeader = $(this._listContainer).find(".grp-thead");
+            this._listContainerHeaderHeight = $(this._listContainerHeader).height();
+            this._alignColumns();
+            this._populateColumnSortLinks();
         };
         this._initListEvents = function(container) {
             var parent_reference = this
             $(container).find(".grp-add-handler").bind("click", function(e){
-
                 setTimeout(function(){
                     parent_reference._initList(parent_reference._container, parent_reference.options);     
                     parent_reference._clearEmpties();
-
                 },100)
+
+                setTimeout(function(){
+                    parent_reference._alignColumns();
+                },1000);
+
+                
                 
             })
             $(container).find(".grp-delete-handler").bind("click", function(e){
@@ -327,6 +335,46 @@
 
                        
         }
+        this._sortItemsByProperty = function(property, ascending){
+            //console.log("sort items by "+property+" ascending: "+ascending)
+
+            var on = ascending? 1 : -1;
+            var off = ascending? -1 : 1;
+            //first go through and sort items by order
+            this.list_items.sort(function(a,b){
+                var apos = a.getProperty(property)
+                var bpos = b.getProperty(property)
+
+                var aIsEmpty = apos === null || a.isEmpty();
+                var bIsEmpty = bpos === null || b.isEmpty();
+
+                var aIsDeleted = a.isDeleted()
+                var bIsDeleted = b.isDeleted()
+
+                //console.log("apos: "+apos+" bpos: "+bpos+' aIsEmpty: '+aIsEmpty+" bIsEmpty: "+bIsEmpty+" aIsDeleted: "+aIsDeleted+" bIsDeleted: "+bIsDeleted)
+
+                if(apos == bpos) return 0;
+
+                //If empty or deleted, element is always after
+
+                if(aIsEmpty && !bIsEmpty ) return on;
+                if(bIsEmpty && !aIsEmpty ) return off;
+
+                if(aIsDeleted && !bIsDeleted ) return on;
+                if(bIsDeleted && !aIsDeleted ) return off;
+
+                if(apos >= bpos) return on;
+                return off;
+            });
+
+            
+            //then go through and "repair" any gaps or problems
+            counter = 0
+            for(var k=0; k<this.list_items.length; k++){
+                var list_item = this.list_items[k];
+                list_item.setPosition(counter++);                                    
+            }
+        }
         this._sortItemsByTop = function(item, apply_update){
             if(typeof apply_update == "undefined"){
                 apply_update = false;
@@ -360,6 +408,7 @@
             }          
 
             //Realign:
+            this._listContainerHeaderHeight = $(this._listContainerHeader).height();
             var runningY = this._listContainerHeaderHeight;
             for(var k=0; k<this.list_items.length; k++){
                 list_item = this.list_items[k];
@@ -376,6 +425,7 @@
                 duration = 400;
             }
 
+            this._listContainerHeaderHeight = $(this._listContainerHeader).height();
             var runningY = this._listContainerHeaderHeight;
 
             for(var k=0; k<this.list_items.length; k++){
@@ -398,7 +448,91 @@
                 }                
             }
         }
+        this._alignColumns = function(){
 
+            var list_items = $(element).find('.grp-tbody').not(".grp-empty-form");
+            
+            
+            //if there's at least one item, adjust column dimensions
+            if(list_items.length > 0){
+
+                var first_list_item = list_items[0];
+                var first_list_item_columns = $(first_list_item).find('.grp-td');
+                var first_list_item_row = $(first_list_item).find('.grp-tr');
+                var header_columns = $(this._listContainerHeader).find('.grp-th');
+
+                for(var k=0; k<first_list_item_columns.length; k++){
+                    var first_item_column = first_list_item_columns[k];
+                    var header_column = header_columns[k];
+
+                    var columnWidth = $(first_item_column).width();
+                    if(k==0){
+                        columnWidth += 4;
+                    }
+                    
+                    $(header_column).width(columnWidth);
+                    $(header_column).css("display", "inline-block");
+                }
+
+                var rowWidth = $(first_list_item_row).width()+20;
+                $(this._container).width(rowWidth);
+            }
+        },
+
+        this._populateColumnSortLinks = function(){
+            var parent_reference = this;
+
+            var list_items = $(element).find(".grp-tbody.grp-empty-form");
+            var header_columns = $(this._listContainerHeader).find('.grp-th');
+            var empty_columns = $(list_items).find('.grp-td');
+            
+            for(var k=0; k<header_columns.length; k++){
+                var header_column = header_columns[k];
+                var empty_column = empty_columns[k];
+
+                var isColumnInited = $(header_column).hasClass( 'sort-inited' );
+                if(isColumnInited==false){
+                    
+                    var columnText = $(header_column).text();
+                    var sortProperty = columnText;
+                    var classes = $(empty_column).attr('class').split(/\s+/);
+                    var isReadOnly = $(empty_column).find(".grp-readonly").length > 0;
+
+
+                    
+                    for(var i=0; i<classes.length; i++){
+                        var class_name = classes[i];
+                        if(class_name!= '' && class_name.indexOf('grp')<0 && class_name.indexOf('required')<0){
+                            sortProperty = class_name;
+                        }
+                    }
+                    if(sortProperty != '' && isReadOnly == false){
+                        var link = '<a href="#'+sortProperty+'">'+columnText+'</a>';
+                        $(header_column).html(link);
+                    }
+                    $(header_column).addClass("sort-inited");
+
+                    $(header_column).find('a').bind("click", function(e){
+                        e.preventDefault();
+                        var url = e.target.toString();
+                        var hash = url.substr(url.indexOf('#')+1);
+                        var isAscending = $(this).hasClass( 'sort-asc' );
+                        if(isAscending){
+                            $(header_columns).find("a").removeClass( 'sort-asc sort-desc' );
+                            $(this).addClass( 'sort-desc' );
+                            parent_reference._sortItemsByProperty(hash, true);
+                        }else{
+                            $(header_columns).find("a").removeClass( 'sort-asc sort-desc' );
+                            $(this).addClass( 'sort-asc' );
+                            parent_reference._sortItemsByProperty(hash, false);
+                        }
+
+                    });
+                }
+
+            }
+
+        },
         
         this._initList(element, options);
     };
@@ -450,6 +584,56 @@
         }
         this.getPosition = function(){
             return this._position;
+        }
+        this.getProperty = function(property){
+            var column = $(this._container).find("."+property);
+            
+            var isTextField = $(column).find(".vTextField").length > 0;
+            var isTextArea = $(column).find("textarea").length > 0;
+            var isCheckBox = $(column).find("input[type='checkbox']").length > 0;
+            var isImageUpload = $(column).find(".file-upload").length > 0;
+            var isSelect = $(column).find("select").length > 0;
+            var isFK = $(column).find("grp-autocomplete-wrapper-fk").length > 0;
+
+            //File upload
+            if(isImageUpload){
+                var linkText = $(column).find("a").text();
+                return $(column).find("a").text();
+            }
+
+           
+
+            //fk
+            if(isFK){
+                return $(column).find("input.vTextField").val();
+            }
+
+            //m2m
+
+             //textfield
+            if(isTextField){
+                return $(column).find("input").val();
+            }
+
+            //select
+            if(isSelect){
+                return $(column).find("select option:selected").text();
+            }
+
+            //checkbox
+            if(isCheckBox){
+                return $(column).find("input").is(':checked');
+            }
+
+            //checkboxes
+
+            //textarea
+            if(isTextArea){
+                return $(column).find("textarea").val();
+            }
+
+            //last attempt:
+            return $(column).find("input").val();
         }
         this.setPositionWhileDragging = function(value){
             //console.log(this.getPosition()+" -> "+value)
@@ -558,17 +742,20 @@
             this._buttonContainer = $(this._positionContainer).find('.ordering-buttons');
             this._originalPositionContainer = $(this._buttonContainer).find('input.original_value')[0];
             this._inputChangeContainer = $(this._buttonContainer).find('input.new_value')[0];
-
+            
 
             //PARSE INITIAL VALUE:
             this._originalHasValue = this._hasValue = $(this._inputContainer).val() != "";
             this._position = isNumber($(this._inputContainer).val())? parseInt($(this._inputContainer).val()) : 0;
             
+            
+
             this._originalPosition = this._position;
-            $(this._originalPositionContainer).val(this._originalPosition)
+            $(this._originalPositionContainer).attr('value', this._originalPosition)
+            //console.log("_originalPosition: "+this._originalPosition+" this._position: "+this._position+" val: "+$(this._originalPositionContainer).val())
 
             if(this.isEmpty() == false){
-                $(this._inputChangeContainer).val(this._originalPosition)    
+                $(this._inputChangeContainer).attr('value', this._originalPosition)    
             }
             
         }
@@ -673,7 +860,7 @@
             }
             
         }
-        
+
         this._update = function(duration){
             //Update value of position in box     
             if(this._isDeleted){

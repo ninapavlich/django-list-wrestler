@@ -9,4 +9,5 @@
 .sass-cache/
 *.egg-info/
 dist/
+build/
 venv/

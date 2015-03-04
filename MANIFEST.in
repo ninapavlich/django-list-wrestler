@@ -2,4 +2,6 @@ include AUTHORS.rst
 include LICENSE.txt
 include CHANGELOG.rst
 include README.md
+include django_inline_wrestler/static/django_inline_wrestler/css/django-inline-wrestler.css
+include django_inline_wrestler/static/django_inline_wrestler/js/django-inline-wrestler.js
 recursive-include django_inline_wrestler/ *.py *.css *.js

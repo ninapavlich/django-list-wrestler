@@ -1,2 +1,5 @@
+include AUTHORS.rst
+include LICENSE.txt
+include CHANGELOG.rst
 include README.md
-recursive-include django_inline_wrester *.py *.css *.js
+recursive-include django_inline_wrestler/ *

@@ -9,5 +9,4 @@
 .sass-cache/
 *.egg-info/
 dist/
-inline_orderable_testing_db
 venv/

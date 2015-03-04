@@ -1,4 +1,4 @@
-django-inline-orderable
+django-inline-wrestler
 =======================
 
 Make django inline lists easier to sort with jQuery and Grappelli.
@@ -18,6 +18,8 @@ This plugin turns an ordinary order field into a high-powered sorting tool inclu
 
 Usage
 =====
+1. pip install django-inline-wrestler
+2. Add 'django-inline-wrestler' to your INSTALLED_APPS list in your project's settings.py
 
 ```python
 from django_inline_wrestler.admin import TabularInlineOrderable

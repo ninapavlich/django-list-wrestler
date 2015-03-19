@@ -46,7 +46,7 @@
         this.request_update_timeout_duration = 1;
 
         this.realign_interval;
-        this.realign_interval_duration = 100;
+        this.realign_interval_duration = 250;
 
         this.drag_offset_x = 0;
         this.drag_offset_y = 0;
@@ -253,6 +253,7 @@
             clearInterval(this.realign_interval)   
             this.realign_interval = setInterval(function(){
                 parent_reference._realignItems(0);
+                parent_reference._alignColumns();
             }, this.realign_interval_duration)
         }
         this._initListStyles = function(container){
@@ -426,7 +427,7 @@
             }
 
             this._listContainerHeaderHeight = $(this._listContainerHeader).height();
-            var runningY = this._listContainerHeaderHeight;
+            var runningY = 22;//this._listContainerHeaderHeight;
 
             for(var k=0; k<this.list_items.length; k++){
                 var list_item = this.list_items[k];
@@ -450,13 +451,13 @@
         }
         this._alignColumns = function(){
 
-            var list_items = $(element).find('.grp-tbody').not(".grp-empty-form");
             
+            //var list_items = $(element).find('.grp-tbody').not(".grp-empty-form");
             
             //if there's at least one item, adjust column dimensions
-            if(list_items.length > 0){
+            if(this.list_items.length > 0){
 
-                var first_list_item = list_items[0];
+                var first_list_item = this.list_items[0].element;
                 var first_list_item_columns = $(first_list_item).find('.grp-td');
                 var first_list_item_row = $(first_list_item).find('.grp-tr');
                 var header_columns = $(this._listContainerHeader).find('.grp-th');
@@ -465,7 +466,7 @@
                     var first_item_column = first_list_item_columns[k];
                     var header_column = header_columns[k];
 
-                    var columnWidth = $(first_item_column).width();
+                    var columnWidth = $(first_item_column).width()-1;
                     if(k==0){
                         columnWidth += 4;
                     }
@@ -506,7 +507,9 @@
                             sortProperty = class_name;
                         }
                     }
-                    if(sortProperty != '' && isReadOnly == false){
+                    var isOrderColumn = sortProperty == this.options['order_by'];
+
+                    if(sortProperty != '' && isReadOnly == false && isOrderColumn == false){
                         var link = '<a href="#'+sortProperty+'">'+columnText+'</a>';
                         $(header_column).html(link);
                     }
@@ -543,6 +546,7 @@
         this.id = id;
         this.parent_list = parent_list;
         this.options = $.extend({}, options); 
+        this.element = element;
 
 
 
@@ -766,7 +770,7 @@
             var parent_reference = this;
 
 
-            $(this._buttonContainer).find("input.drag").bind("mousedown", function(e){
+            $(this._buttonContainer).find(".drag").bind("mousedown", function(e){
                 if(e.which == 1){
                     //left clicked
                     e.preventDefault();
@@ -784,35 +788,45 @@
                 }
             });
 
-            $(this._buttonContainer).find("input.move_top").bind("click", function(e){
-                e.preventDefault();
-                parent_reference.parent_list.moveToTop(parent_reference);
+            $(this._buttonContainer).find(".move_top").bind("click", function(e){
+                if(e.which == 1){
+                    e.preventDefault();
+                    parent_reference.parent_list.moveToTop(parent_reference);
+                }
             });
-            $(this._buttonContainer).find("input.move_up").bind("click", function(e){
-                e.preventDefault();
-                parent_reference.parent_list.moveUp(parent_reference);
+            $(this._buttonContainer).find(".move_up").bind("click", function(e){
+                if(e.which == 1){
+                    e.preventDefault();
+                    parent_reference.parent_list.moveUp(parent_reference);
+                }
             });
-            $(this._buttonContainer).find("input.move_down").bind("click", function(e){
-                e.preventDefault();
-                parent_reference.parent_list.moveDown(parent_reference);
+            $(this._buttonContainer).find(".move_down").bind("click", function(e){
+                if(e.which == 1){
+                    e.preventDefault();
+                    parent_reference.parent_list.moveDown(parent_reference);
+                }
             });
-            $(this._buttonContainer).find("input.move_bottom").bind("click", function(e){
-                e.preventDefault();
-                parent_reference.parent_list.moveToBottom(parent_reference);
+            $(this._buttonContainer).find(".move_bottom").bind("click", function(e){
+                if(e.which == 1){
+                    e.preventDefault();
+                    parent_reference.parent_list.moveToBottom(parent_reference);
+                }
             });
 
-            $(this._buttonContainer).find("input.apply_new_value").bind("mousedown", function(e){
-                e.preventDefault();
-                parent_reference._applyInputValue();                
+            $(this._buttonContainer).find(".apply_new_value").bind("mousedown", function(e){
+                if(e.which == 1){
+                    e.preventDefault();
+                    parent_reference._applyInputValue();                
+                }
             });
 
-            $(this._buttonContainer).find("input.new_value").bind("keyup", function(e) {
+            $(this._buttonContainer).find(".new_value").bind("keyup", function(e) {
                 if (e.keyCode == 10 || e.keyCode == 13) {
                     e.preventDefault();
                     parent_reference._applyInputValue();
                 }
             });
-            $(this._buttonContainer).find("input.new_value").bind("keydown", function(e) {
+            $(this._buttonContainer).find(".new_value").bind("keydown", function(e) {
                 if (e.keyCode == 10 || e.keyCode == 13) {
                     //Block enter key on new value input
                     e.preventDefault();                    
@@ -902,20 +916,29 @@
             
         }
         this._createButtons = function(){
+            // <ul class="grp-tools">
+            //     <li><a href="#" class="grp-icon grp-viewsite-link"></a></li>
+            //     <li><a href="#" class="grp-icon grp-add-handler"></a></li>
+            //     <li><a href="#" class="grp-icon grp-delete-handler"></a></li>
+            //     <li><a href="#" class="grp-icon grp-remove-handler"></a></li>
+            //     <li><a href="#" class="grp-icon grp-drag-handler"></a></li>
+            //     <li><a href="#" class="grp-icon grp-open-handler"></a></li>
+            //     <li><a href="#" class="grp-icon grp-close-handler"></a></li>
+            // </ul>
             return '<div class="ordering-buttons">\
-                <div class="drag-container">\
-                    <input type="button" title="Drag element" class="drag" value="Drag">\
-                </div>\
-                <div class="move-container">\
-                    <input type="button" title="Move to top" class="move_top" value="To Top">\
-                    <input type="button" title="Move up" class="move_up" value="Move Up">\
-                    <input type="button" title="Move down" class="move_down" value="Move Down">\
-                    <input type="button" title="Move to bottom" class="move_bottom" value="To Bottom">\
-                </div>\
-                <div class="jump-container">\
-                    <input type="text" class="new_value" name="New Value" value="">\
-                    <input type="button" title="Move to this position" class="apply_new_value" value="Move to this position">\
-                </div>\
+                <ul class="grp-tools drag-container">\
+                    <li><a href="#" title="Drag element" class="grp-icon grp-drag-handler drag" value="Drag">Drag</a></li>\
+                </ul>\
+                <ul class="grp-tools move-container">\
+                    <li><a href="#" title="Move to top" class="grp-icon grp-close-handler move_top" >Move to top</a></li>\
+                    <li><a href="#" title="Move up" class="grp-icon grp-arrow-up-handler move_up" >Move Up</a></li>\
+                    <li><a href="#" title="Move down" class="grp-icon grp-arrow-down-handler move_down" >Move Down</a></li>\
+                    <li><a href="#" title="Move to bottom" class="grp-icon grp-open-handler move_bottom" >Move to bottom</a></li>\
+                </ul>\
+                <ul class="grp-tools jump-container">\
+                    <li><input type="text" class="new_value" name="New Value" value="" /></li>\
+                    <li><a href="#" title="Move to this position" class="grp-icon grp-add-handler apply_new_value" value="Move to this position">Move to this position</a></li>\
+                </ul>\
                 <input type="text" class="readonly original_value" name="Original Value" value="" readonly="readonly">\
                 \
             </div>'

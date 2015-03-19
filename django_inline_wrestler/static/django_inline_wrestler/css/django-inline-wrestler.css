@@ -1,87 +1,101 @@
 .ordering-buttons{
 	margin-bottom:5px;
+	margin-top:5px;
 	width:121px;
+	position: relative;
+	height:110px;
+
+}
+.ordering-buttons ul{
+	position:absolute;
+	float:left;
+	margin-right: 5px;
+	overflow: visible;
+}
+.ordering-buttons .jump-container{
+	top:37px;
+	left:62px;
+	width:60px;
+}
+.ordering-buttons .move-container{
+	top:0px;
+	left:31px;
 }
 
+.ordering-buttons .drag-container{
+	top:37px;
+}
 
-.ordering-buttons input[type=button]{
+.ordering-buttons .move-container li{
+	float:none;
+	margin:0;
+	padding:0;
+}
+
+.ordering-buttons a{
 	border: 1px solid #ccc;
 	
 	background-color:#eee;
-	background: url(../../grappelli/images/icons-s0e29227ce9.png);
 	text-indent: -9999px;
 	width: 26px;
 	height: 20px;
 
 	margin:0;
 }
-.ordering-buttons input:hover{
+.ordering-buttons a:hover{
 	background-color:#ddd;					
 }
-.ordering-buttons input.drag{
+.ordering-buttons .drag{
 
-	background-position: 0px -2732px; 
 	-webkit-border-radius: 5px;
 	border-radius: 5px;	
-	height:40px;
-	margin-top:20px;
+	height:28px;
 	
 }
-.ordering-buttons input.drag.disabled{
-	background-position: 0px -2252px; 
+.ordering-buttons .drag.disabled{
 	cursor: default;
 }
-.ordering-buttons input.move_top{					
-	background-position: 0px -2000px; 
-
+.ordering-buttons .move_top{					
+	
 	-webkit-border-radius: 5px 5px 0px 0px;
 	border-radius: 5px 5px 0px 0px;
 	
 }
-.ordering-buttons input.move_top.disabled{
-	background-position: 0px -2218px; 
+.ordering-buttons .move_top.disabled{
 	cursor: default;
 
 }
-.ordering-buttons input.move_up{					
-	background-position: 0px -2874px; 	
-
-
+.ordering-buttons .move_up{					
+	
 	-webkit-border-radius: 0;
 	border-radius: 0;	
 	border-top:0;	
 }
-.ordering-buttons input.move_up.disabled{
-	background-position: 0px -2830px; 
+.ordering-buttons .move_up.disabled{
 	cursor: default;	
 }
-.ordering-buttons input.move_down{
-	background-position: 0px -2654px;	
-
+.ordering-buttons .move_down{
+	
 	-webkit-border-radius: 0;
 	border-radius: 0;
 	border-top:0;			
 }
-.ordering-buttons input.move_down.disabled{
-	background-position: 0px -2479px;
+.ordering-buttons .move_down.disabled{
 	cursor: default;
 }
-.ordering-buttons input.move_bottom{
-	background-position: 0px -1955px;
+.ordering-buttons .move_bottom{
 	-webkit-border-radius: 0px 0px 5px 5px;	
 	border-radius: 0px 0px 5px 5px;		
 
 	border-top:0px;				
 	
 }
-.ordering-buttons input.move_bottom.disabled{
+.ordering-buttons .move_bottom.disabled{
 	background-position: 0px -1912px;
 	cursor: default;
 }
-.ordering-buttons .jump-container{
-	margin-top:25px;
-}
-.ordering-buttons input.new_value{
+
+.ordering-buttons .new_value{
 	width:30px;
 	height:30px;
 
@@ -91,27 +105,25 @@
 	border-radius: 5px 0px 0px 5px;	
 
 	margin-right:-4px;
+	position:static;
 }
-.ordering-buttons input.apply_new_value{
+.ordering-buttons .apply_new_value{
 
 
 	-webkit-border-radius: 0px 5px 5px 0px;
 	border-radius: 0px 5px 5px 0px;
 	
-	background-position: 0px -1331px; 
 	width:24px;
-	height:30px;
+	height:28px;
 }
-.ordering-buttons input.apply_new_value.disabled{
-	background-position: 0px -1288px; 
+.ordering-buttons .apply_new_value.disabled{
 	cursor: default;
 }
-.ordering-buttons input.original_value{
+.ordering-buttons .original_value{
 	display:none;
 }
-.ordering-buttons input.delete{
-	background-position: 0px -2390px;
-
+.ordering-buttons .delete{
+	
 	-webkit-border-radius: 5px 0px 0px 5px;
 	border-radius: 5px 0px 0px 5px;		
 
@@ -120,18 +132,13 @@
 
 }
 
-.ordering-buttons input.move_bottom, 
-.ordering-buttons input.move_down,
-.ordering-buttons input.move_up,
-.ordering-buttons input.move_top{
+.ordering-buttons .move_bottom, 
+.ordering-buttons .move_down,
+.ordering-buttons .move_up,
+.ordering-buttons .move_top{
 	display:block;
 }
-.ordering-buttons .drag-container,
-.ordering-buttons .move-container,
-.ordering-buttons .jump-container{
-	float:left;
-	margin-right: 5px;
-}
+
 
 .list-item-initialized .ordering-buttons + input{
 	display: none;

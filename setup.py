@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 #this is a test
 setup(name = 'django-inline-wrestler',
       description = 'Wrestle your django inlines with jQuery and Grappelli.',
-      version = '3.2',
+      version = '4.0',
       url = 'https://github.com/ninapavlich/django-inline-wrestler',
       author = 'Nina Pavlich',
       author_email='nina@ninalp.com',

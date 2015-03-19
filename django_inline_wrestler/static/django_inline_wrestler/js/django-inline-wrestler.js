@@ -470,12 +470,16 @@
                     if(k==0){
                         columnWidth += 4;
                     }
-                    
+                    if(k==first_list_item_columns.length-1){
+                        console.log("columnWidth: "+columnWidth)
+                    }
                     $(header_column).width(columnWidth);
                     $(header_column).css("display", "inline-block");
+                    
+                    
                 }
 
-                var rowWidth = $(first_list_item_row).width()+20;
+                var rowWidth = $(first_list_item_row).width();
                 $(this._container).width(rowWidth);
             }
         },
@@ -789,33 +793,33 @@
             });
 
             $(this._buttonContainer).find(".move_top").bind("click", function(e){
+                e.preventDefault();
                 if(e.which == 1){
-                    e.preventDefault();
                     parent_reference.parent_list.moveToTop(parent_reference);
                 }
             });
             $(this._buttonContainer).find(".move_up").bind("click", function(e){
+                e.preventDefault();
                 if(e.which == 1){
-                    e.preventDefault();
                     parent_reference.parent_list.moveUp(parent_reference);
                 }
             });
             $(this._buttonContainer).find(".move_down").bind("click", function(e){
+                e.preventDefault();
                 if(e.which == 1){
-                    e.preventDefault();
                     parent_reference.parent_list.moveDown(parent_reference);
                 }
             });
             $(this._buttonContainer).find(".move_bottom").bind("click", function(e){
+                e.preventDefault();
                 if(e.which == 1){
-                    e.preventDefault();
                     parent_reference.parent_list.moveToBottom(parent_reference);
                 }
             });
 
             $(this._buttonContainer).find(".apply_new_value").bind("mousedown", function(e){
+                e.preventDefault();
                 if(e.which == 1){
-                    e.preventDefault();
                     parent_reference._applyInputValue();                
                 }
             });
@@ -845,13 +849,13 @@
         }
         this._removeListItemEvents = function(){
             var parent_reference = this
-            $(this._buttonContainer).find("input.move_top").unbind("click");
-            $(this._buttonContainer).find("input.move_up").unbind("click");
-            $(this._buttonContainer).find("input.move_down").unbind("click");
-            $(this._buttonContainer).find("input.move_bottom").unbind("click");
-            $(this._buttonContainer).find("input.apply_new_value").unbind("click");
-            $(this._buttonContainer).find("input.new_value").unbind("keyup");
-            $(this._buttonContainer).find("input.new_value").unbind("keydown");
+            $(this._buttonContainer).find(".move_top").unbind("click");
+            $(this._buttonContainer).find(".move_up").unbind("click");
+            $(this._buttonContainer).find(".move_down").unbind("click");
+            $(this._buttonContainer).find(".move_bottom").unbind("click");
+            $(this._buttonContainer).find(".apply_new_value").unbind("click");
+            $(this._buttonContainer).find(".new_value").unbind("keyup");
+            $(this._buttonContainer).find(".new_value").unbind("keydown");
         }
 
         
@@ -889,27 +893,27 @@
             var list_length = this.parent_list.list_items.length;
             
             if(this._position <= 0){
-                $(this._buttonContainer).find("input.move_top").addClass("disabled");
-                $(this._buttonContainer).find("input.move_up").addClass("disabled");
+                $(this._buttonContainer).find(".move_top").addClass("disabled");
+                $(this._buttonContainer).find(".move_up").addClass("disabled");
             }else{
-                $(this._buttonContainer).find("input.move_top").removeClass("disabled");
-                $(this._buttonContainer).find("input.move_up").removeClass("disabled");
+                $(this._buttonContainer).find(".move_top").removeClass("disabled");
+                $(this._buttonContainer).find(".move_up").removeClass("disabled");
             }
 
             if(this._position >= list_length-1 ){
-                $(this._buttonContainer).find("input.move_down").addClass("disabled");
-                $(this._buttonContainer).find("input.move_bottom").addClass("disabled"); 
+                $(this._buttonContainer).find(".move_down").addClass("disabled");
+                $(this._buttonContainer).find(".move_bottom").addClass("disabled"); 
             }else{
-                $(this._buttonContainer).find("input.move_down").removeClass("disabled");
-                $(this._buttonContainer).find("input.move_bottom").removeClass("disabled"); 
+                $(this._buttonContainer).find(".move_down").removeClass("disabled");
+                $(this._buttonContainer).find(".move_bottom").removeClass("disabled"); 
             }
 
             if(list_length <= 1){
-                $(this._buttonContainer).find("input.drag").addClass("disabled");
-                $(this._buttonContainer).find("input.apply_new_value").addClass("disabled");
+                $(this._buttonContainer).find(".drag").addClass("disabled");
+                $(this._buttonContainer).find(".apply_new_value").addClass("disabled");
             }else{
-                $(this._buttonContainer).find("input.drag").removeClass("disabled");
-                $(this._buttonContainer).find("input.apply_new_value").removeClass("disabled");
+                $(this._buttonContainer).find(".drag").removeClass("disabled");
+                $(this._buttonContainer).find(".apply_new_value").removeClass("disabled");
             }
             
             
@@ -937,7 +941,7 @@
                 </ul>\
                 <ul class="grp-tools jump-container">\
                     <li><input type="text" class="new_value" name="New Value" value="" /></li>\
-                    <li><a href="#" title="Move to this position" class="grp-icon grp-add-handler apply_new_value" value="Move to this position">Move to this position</a></li>\
+                    <li><a href="#" title="Move to this position" class="apply_new_value" value="Move to this position">&gt;</a></li>\
                 </ul>\
                 <input type="text" class="readonly original_value" name="Original Value" value="" readonly="readonly">\
                 \

@@ -113,8 +113,12 @@
 	-webkit-border-radius: 0px 5px 5px 0px;
 	border-radius: 0px 5px 5px 0px;
 	
-	width:24px;
-	height:28px;
+	width:18px;
+	height:21px;
+	text-indent: 0;
+	font-weight: bold;
+	font-size: 16px;
+	padding: 7px 0 0 8px;
 }
 .ordering-buttons .apply_new_value.disabled{
 	cursor: default;

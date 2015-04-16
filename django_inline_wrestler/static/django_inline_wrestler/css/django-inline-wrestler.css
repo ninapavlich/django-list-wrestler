@@ -45,15 +45,17 @@
 .ordering-buttons a:hover{
 	background-color:#ddd;					
 }
+
 .ordering-buttons .drag{
 
 	-webkit-border-radius: 5px;
-	border-radius: 5px;	
-	height:28px;
+	border-radius: 5px;		
 	
 }
 .ordering-buttons .drag.disabled{
 	cursor: default;
+	pointer-events: none;
+	background-color: rgb(220, 220, 220);
 }
 .ordering-buttons .move_top{					
 	
@@ -63,7 +65,8 @@
 }
 .ordering-buttons .move_top.disabled{
 	cursor: default;
-
+	pointer-events: none;
+	background-color: rgb(220, 220, 220);
 }
 .ordering-buttons .move_up{					
 	
@@ -73,6 +76,8 @@
 }
 .ordering-buttons .move_up.disabled{
 	cursor: default;	
+	pointer-events: none;
+	background-color: rgb(220, 220, 220);
 }
 .ordering-buttons .move_down{
 	
@@ -82,6 +87,8 @@
 }
 .ordering-buttons .move_down.disabled{
 	cursor: default;
+	pointer-events: none;
+	background-color: rgb(220, 220, 220);
 }
 .ordering-buttons .move_bottom{
 	-webkit-border-radius: 0px 0px 5px 5px;	
@@ -91,8 +98,9 @@
 	
 }
 .ordering-buttons .move_bottom.disabled{
-	background-position: 0px -1912px;
 	cursor: default;
+	pointer-events: none;
+	background-color: rgb(220, 220, 220);
 }
 
 .ordering-buttons .new_value{
@@ -122,6 +130,8 @@
 }
 .ordering-buttons .apply_new_value.disabled{
 	cursor: default;
+	pointer-events: none;
+	background-color: rgb(220, 220, 220);
 }
 .ordering-buttons .original_value{
 	display:none;

@@ -59,7 +59,7 @@
         //PUBLIC FUNCTIONS //////////////
         /////////////////////////////////
         this.getVersion = function(){
-            return '3.1';
+            return '4.2';
         }
         
         this.moveToTop = function(item){
@@ -586,9 +586,10 @@
             this._requestUpdate(immediate);
             if(this.isEmpty() == false){
                 $(this._inputChangeContainer).val(this._position+1);
+                $(this._inputChangeContainer).attr("value", (this._position+1));
             }
             
-            //console.log("setPosition = "+value+" original = "+this._originalPosition)
+            console.log("setPosition = "+value+" original = "+this._originalPosition)
         }
         this.getPosition = function(){
             return this._position;
@@ -880,12 +881,15 @@
         }
 
         this._update = function(duration){
-            //Update value of position in box     
+            //Update value of position in box 
+
             if(this._isDeleted){
                 $(this._inputContainer).val("")   
+                $(this._inputContainer).attr("value", "");
                 $(this._buttonContainer).hide(); 
             }else{
-                $(this._inputContainer).val(this._position+1)
+                $(this._inputContainer).val(this._position+1);
+                $(this._inputContainer).attr("value", (this._position+1));
                 $(this._buttonContainer).show();
             }
 

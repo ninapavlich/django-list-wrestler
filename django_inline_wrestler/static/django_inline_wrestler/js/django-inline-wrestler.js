@@ -59,7 +59,7 @@
         //PUBLIC FUNCTIONS //////////////
         /////////////////////////////////
         this.getVersion = function(){
-            return '4.2';
+            return '4.3';
         }
         
         this.moveToTop = function(item){
@@ -406,10 +406,12 @@
                 }else{
                     list_item.setPositionWhileDragging(counter++);       
                 }
+                list_item.setZIndex(100);
             }          
+            item.setZIndex(500);
 
             //Realign:
-            this._listContainerHeaderHeight = $(this._listContainerHeader).height();
+            this._listContainerHeaderHeight = $(this._listContainerHeader).find('.grp-th').height();
             var runningY = this._listContainerHeaderHeight;
             for(var k=0; k<this.list_items.length; k++){
                 list_item = this.list_items[k];
@@ -450,19 +452,22 @@
             }
         }
         this._alignColumns = function(){
-
             
             //var list_items = $(element).find('.grp-tbody').not(".grp-empty-form");
             
             //if there's at least one item, adjust column dimensions
-            if(this.list_items.length > 0){
+            var has_items = this.list_items.length > 0;
+        
 
-                var first_list_item = this.list_items[0].element;
-                var first_list_item_columns = $(first_list_item).find('.grp-td');
-                var first_list_item_row = $(first_list_item).find('.grp-tr');
-                var header_columns = $(this._listContainerHeader).find('.grp-th');
+            var first_list_item = has_items? this.list_items[0].element : null;
+            var first_list_item_columns = has_items? $(first_list_item).find('.grp-td') : [];
+            var first_list_item_row = has_items? $(first_list_item).find('.grp-tr') : [];
+            var header_columns = $(this._listContainerHeader).find('.grp-th');
 
-                for(var k=0; k<first_list_item_columns.length; k++){
+            for(var k=0; k<header_columns.length; k++){
+                
+
+                if(has_items){
                     var first_item_column = first_list_item_columns[k];
                     var header_column = header_columns[k];
 
@@ -470,18 +475,28 @@
                     if(k==0){
                         columnWidth += 4;
                     }
-                    if(k==first_list_item_columns.length-1){
-                        console.log("columnWidth: "+columnWidth)
-                    }
+                    // if(k==first_list_item_columns.length-1){
+                    //     console.log("columnWidth: "+columnWidth)
+                    // }
                     $(header_column).width(columnWidth);
+                    $(header_column).css("display", "inline-block");    
+                }else{
+                    $(header_column).css("width", "auto");
                     $(header_column).css("display", "inline-block");
-                    
-                    
                 }
-
-                var rowWidth = $(first_list_item_row).width();
-                $(this._container).width(rowWidth);
+                
+                
+                
             }
+
+            if(has_items){
+                var rowWidth = $(first_list_item_row).width();
+                $(this._container).width(rowWidth);    
+            }else{
+                $(this._container).css("width", "auto");   
+            }
+            
+            
         },
 
         this._populateColumnSortLinks = function(){
@@ -589,7 +604,7 @@
                 $(this._inputChangeContainer).attr("value", (this._position+1));
             }
             
-            console.log("setPosition = "+value+" original = "+this._originalPosition)
+            // console.log("setPosition = "+value+" original = "+this._originalPosition)
         }
         this.getPosition = function(){
             return this._position;
@@ -658,7 +673,11 @@
                 $(this._container).css("top", top_position);
             }else{
                 $(this._container).stop().animate({top: top_position}, duration);   
-            }            
+            }     
+            
+        }
+        this.setZIndex = function(zindex){
+            $(this._container).css("z-index", zindex);       
         }
         this.getTopPosition = function(){
             return parseInt($(this._container).css("top"), 10);
@@ -790,6 +809,12 @@
                         $('body').unbind("mouseup");
                         parent_reference.parent_list.stopDrag(parent_reference, e);
                     });
+                }
+            });
+            $(this._buttonContainer).find(".drag").bind("click", function(e){
+                if(e.which == 1){
+                    //left clicked
+                    e.preventDefault();
                 }
             });
 

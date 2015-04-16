@@ -59,7 +59,7 @@
         //PUBLIC FUNCTIONS //////////////
         /////////////////////////////////
         this.getVersion = function(){
-            return '4.3';
+            return '4.4';
         }
         
         this.moveToTop = function(item){
@@ -482,7 +482,7 @@
                     $(header_column).css("display", "inline-block");    
                 }else{
                     $(header_column).css("width", "auto");
-                    $(header_column).css("display", "inline-block");
+                    $(header_column).css("display", "table-cell");
                 }
                 
                 

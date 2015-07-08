@@ -16,6 +16,10 @@ This plugin turns an ordinary order field into a high-powered sorting tool inclu
 
 ![Screenshot of Django inline items](/../master/docs/screenshots/sort_by_columns.png?raw=true "Screenshot of Tabular Inline Items")
 
+Requirements
+=====
+Requires Django and django-grappelli
+
 Usage
 =====
 1. pip install django-inline-wrestler

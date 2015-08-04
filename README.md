@@ -23,7 +23,7 @@ Requires Django and django-grappelli
 Usage
 =====
 1. pip install django-inline-wrestler
-2. Add 'django-inline-wrestler' to your INSTALLED_APPS list in your project's settings.py
+2. Add 'django_inline_wrestler' to your INSTALLED_APPS list in your project's settings.py
 
 ```python
 from django_inline_wrestler.admin import TabularInlineOrderable

@@ -475,11 +475,11 @@
                     if(k==0){
                         columnWidth += 4;
                     }
-                    // if(k==first_list_item_columns.length-1){
-                    //     console.log("columnWidth: "+columnWidth)
-                    // }
+                    if(k==first_list_item_columns.length-1){
+                        columnWidth -= 10;
+                    }
                     $(header_column).width(columnWidth);
-                    $(header_column).css("display", "inline-block");    
+                    // $(header_column).css("display", "inline-block");    
                 }else{
                     $(header_column).css("width", "auto");
                     $(header_column).css("display", "table-cell");

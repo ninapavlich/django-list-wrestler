@@ -1059,6 +1059,10 @@
                     }
                 }
     
+                if(window['custom_list_order_by']!=undefined){
+                    config['order_by'] = window['custom_list_order_by'];
+                }
+                // console.log("ORDER BY "+config['order_by'])
                 var component = new $.orderable_admin_list(element, new_id, config); 
 
                 

@@ -8,9 +8,9 @@ This plugin turns an ordinary order field into a high-powered sorting tool inclu
 * Jump to Top and Jump to Bottom buttons
 * Jump one up and Jump one bottom
 * Send directly to a position in the list
+* Sort by a custom field
 
 For inline admin forms:
-* Sort by a custom field
 * Adjust table headers so they line up with the actual columns
 * Make table headers sortable, so you can sort by a particular field (supports sorting by text inputs, text areas, check boxes, image uploads, and fks)
 * Positioning order buttons anywhere in the table
@@ -57,8 +57,11 @@ class ObjectAdmin(AdminListOrderable):
 	To bring drag-and-drop functionality to a changelist view:
 	"""
 	model = Object
-	fields = ('order', 'title')
-	list_editable = ('order',)
+	fields = ('priority', 'title')
+	list_editable = ('priority',)
+
+	change_list_template = 'admin/django_inline_wrestler/change_list.html'
+    custom_list_order_by = 'priority'
 
 	inlines = [ItemInline, SubItemInline]
 ```

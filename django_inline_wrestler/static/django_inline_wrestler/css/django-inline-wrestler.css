@@ -157,3 +157,49 @@
 .list-item-initialized .ordering-buttons + input{
 	display: none;
 }
+.sort-inited a{
+	display: inline-block;
+	width: 100%;
+	position: relative;
+}
+.sort-inited a:before{
+	content:" ";
+	width: 24px;
+	height: 24px;
+	background-image: url(../images/icons-s846f870921.png);
+	background-repeat: no-repeat;
+	background-position: 0 -2127px;
+	position: absolute;
+	right:0;
+	top:-7px;
+	opacity: 0.5;
+}
+.sort-inited a:after{
+	content:" ";
+	width: 24px;
+	height: 24px;
+	background-image: url(../images/icons-s846f870921.png);
+	background-repeat: no-repeat;
+	background-position: 0 -2039px;
+	position: absolute;
+	right:0;
+	top:1px;
+	opacity: 0.5;
+}
+.sort-inited a.sort-desc:before{
+	background-position: 0 -2171px;
+	opacity: 1;
+}
+.sort-inited a.sort-asc:after{
+	background-position: 0 -2083px;
+	opacity: 1;
+}
+body.grp-change-list table{
+	width: 100%;
+}
+body.grp-change-list table thead{
+	width: 100%;
+}
+body.grp-change-list table tr{
+	width: 100%;
+}

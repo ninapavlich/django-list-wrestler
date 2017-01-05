@@ -1,5 +1,14 @@
 from django.contrib import admin
 
+class AdminListOrderable(admin.ModelAdmin):
+	class Media:        
+		css = {
+			"all": ('django_inline_wrestler/css/django-inline-wrestler.css',)
+		}
+		js = [
+			'django_inline_wrestler/js/django-inline-wrestler.js' 
+		]
+
 class TabularInlineOrderable(admin.TabularInline):
 	class Media:        
 		css = {

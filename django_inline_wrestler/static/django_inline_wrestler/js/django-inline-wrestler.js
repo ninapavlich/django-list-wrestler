@@ -36,6 +36,8 @@
         this._listContainerHeaderHeight = null;
         this.list_item_hash = {};
         this.list_items = [];
+        this.is_changelist = $('.grp-change-list').length > 0;
+        
         
         //CONFIG:
         this.on_item_change_callback = this.options.onItemChangePosition;
@@ -59,7 +61,7 @@
         //PUBLIC FUNCTIONS //////////////
         /////////////////////////////////
         this.getVersion = function(){
-            return '4.4';
+            return '5.0';
         }
         
         this.moveToTop = function(item){
@@ -190,7 +192,7 @@
             
             
 
-            var list_items = $(element).find('.grp-tbody').not(".grp-empty-form")
+            var list_items = $(element).find('.grp-tbody, tr.grp-row').not(".grp-empty-form")
             //console.log("Found "+list_items.length+" list items in list "+this.id)
 
 
@@ -223,6 +225,8 @@
 
             this._sortItems();
             this._realignItems(0);
+
+            window['list_items'] = this.list_items
 
             
             
@@ -257,13 +261,17 @@
             }, this.realign_interval_duration)
         }
         this._initListStyles = function(container){
-            this._listContainer = $(this._container).find(".grp-module.grp-table");
-            this._listContainerHeader = $(this._listContainer).find(".grp-thead");
+            this._listContainer = $(this._container).find(".grp-module.grp-table, table");
+            this._listContainerHeader = $(this._listContainer).find(".grp-thead, thead");
             this._listContainerHeaderHeight = $(this._listContainerHeader).height();
             this._alignColumns();
             this._populateColumnSortLinks();
         };
         this._initListEvents = function(container) {
+            if(this.is_changelist==true){
+                return;
+            }
+
             var parent_reference = this
             $(container).find(".grp-add-handler").bind("click", function(e){
                 setTimeout(function(){
@@ -274,8 +282,6 @@
                 setTimeout(function(){
                     parent_reference._alignColumns();
                 },1000);
-
-                
                 
             })
             $(container).find(".grp-delete-handler").bind("click", function(e){
@@ -411,7 +417,7 @@
             item.setZIndex(500);
 
             //Realign:
-            this._listContainerHeaderHeight = $(this._listContainerHeader).find('.grp-th').height();
+            this._listContainerHeaderHeight = $(this._listContainerHeader).find('.grp-th, th').height();
             var runningY = this._listContainerHeaderHeight;
             for(var k=0; k<this.list_items.length; k++){
                 list_item = this.list_items[k];
@@ -428,13 +434,23 @@
                 duration = 400;
             }
 
-            this._listContainerHeaderHeight = $(this._listContainerHeader).height();
-            var runningY = 22;//this._listContainerHeaderHeight;
-
+            
+            this._listContainerHeaderHeight = $(this._listContainerHeader).find('.grp-th, th').height();
+            var runningY = this.is_changelist? this._listContainerHeaderHeight : 22;
+            
             for(var k=0; k<this.list_items.length; k++){
                 var list_item = this.list_items[k];
                 list_item.setTopPosition(runningY, duration)
-                runningY += list_item.getHeight()
+                runningY += list_item.getHeight();
+                if(this.is_changelist){
+                    $(list_item.element).removeClass('grp-row-even');
+                    $(list_item.element).removeClass('grp-row-odd');
+                    if(k%2==0){
+                        $(list_item.element).addClass('grp-row-even');
+                    }else{
+                        $(list_item.element).addClass('grp-row-odd');
+                    }
+                }
             }
 
             $(this._listContainer).height(runningY)
@@ -453,53 +469,77 @@
         }
         this._alignColumns = function(){
             
+            
             //var list_items = $(element).find('.grp-tbody').not(".grp-empty-form");
             
             //if there's at least one item, adjust column dimensions
-            var has_items = this.list_items.length > 0;
+            var has_items = this.list_items.length > 1;
         
 
             var first_list_item = has_items? this.list_items[0].element : null;
-            var first_list_item_columns = has_items? $(first_list_item).find('.grp-td') : [];
-            var first_list_item_row = has_items? $(first_list_item).find('.grp-tr') : [];
-            var header_columns = $(this._listContainerHeader).find('.grp-th');
+            var first_list_item_columns = has_items? $(first_list_item).find('.grp-td, td') : [];
+            var first_list_item_row = has_items? $(first_list_item).find('.grp-tr, tr') : [];
+            var header_columns = $(this._listContainerHeader).find('.grp-th, th');
 
-            for(var k=0; k<header_columns.length; k++){
+            
+
+            if(this.is_changelist){
+
+                for(var k=0; k<this.list_items.length; k++){
+                    var list_item = this.list_items[k];
+                    
+                    
+
+                    var list_item_columns = $(list_item.element).find('td, th');
+                    for(var j=0; j<header_columns.length; j++){
+                        var list_item_column = list_item_columns[j];
+                        var header_column = header_columns[j];
+
+                        var columnWidth = $(header_column).width();
+                        // $(list_item_column).css("width", "100px");
+                        $(list_item_column).innerWidth(columnWidth)
+                    }
+                    
+                }
+
                 
+            }else{
+                for(var k=0; k<header_columns.length; k++){
+                    if(has_items){
+                        var first_item_column = first_list_item_columns[k];
+                        var header_column = header_columns[k];
+
+                        var columnWidth = $(first_item_column).width()-1;
+                        if(k==0){
+                            columnWidth += 4;
+                        }
+                        $(header_column).width(columnWidth);
+                        $(header_column).css("display", "inline-block");    
+                    }else{
+                        $(header_column).css("width", "auto");
+                        $(header_column).css("display", "table-cell");
+                    }
+                }
 
                 if(has_items){
-                    var first_item_column = first_list_item_columns[k];
-                    var header_column = header_columns[k];
-
-                    var columnWidth = $(first_item_column).width()-1;
-                    if(k==0){
-                        columnWidth += 4;
-                    }
-                    if(k==first_list_item_columns.length-1){
-                        columnWidth -= 10;
-                    }
-                    $(header_column).width(columnWidth);
-                    // $(header_column).css("display", "inline-block");    
+                    var rowWidth = $(first_list_item_row).width();
+                    $(this._container).width(rowWidth);    
                 }else{
-                    $(header_column).css("width", "auto");
-                    $(header_column).css("display", "table-cell");
+                    $(this._container).css("width", "auto");   
                 }
-                
-                
-                
             }
+            
 
-            if(has_items){
-                var rowWidth = $(first_list_item_row).width();
-                $(this._container).width(rowWidth);    
-            }else{
-                $(this._container).css("width", "auto");   
-            }
+            
             
             
         },
 
         this._populateColumnSortLinks = function(){
+            if(this.is_changelist==true){
+                return;
+            }
+
             var parent_reference = this;
 
             var list_items = $(element).find(".grp-tbody.grp-empty-form");
@@ -539,6 +579,7 @@
                         var url = e.target.toString();
                         var hash = url.substr(url.indexOf('#')+1);
                         var isAscending = $(this).hasClass( 'sort-asc' );
+                        
                         if(isAscending){
                             $(header_columns).find("a").removeClass( 'sort-asc sort-desc' );
                             $(this).addClass( 'sort-desc' );
@@ -555,6 +596,7 @@
             }
 
         },
+        
         
         this._initList(element, options);
     };
@@ -728,6 +770,7 @@
         
         //LIST ITEMS//
         this._initListItem = function(item, options) {  
+            
             //Initialize Item:
             //Make form field readonly
             //Add form item buttons      
@@ -762,7 +805,9 @@
         }
         this._initContent = function(item){
             
-            this._positionContainer = $(item).find(".grp-td."+this.options['order_by']);
+            this._positionContainer = $(item).find(".grp-td."+this.options['order_by']+", td.field-"+this.options['order_by']);
+            
+
             this._inputContainer = $(this._positionContainer).find('input:text')[0];
 
             //ADD BUTTONS
@@ -976,7 +1021,7 @@
                 \
             </div>'
         }
-
+        
         this._initListItem(element, options);
     };
     
@@ -986,8 +1031,9 @@
     $.init_orderable_admin_lists = function(config) { //Using only one method off of $.fn  
         
         app_name = "django-inline-wrestler";
-        all_elements = $(document).find("."+app_name);
-        //console.log("FOUND "+all_elements.length+" items with class name: "+app_name)
+        app_selector = "."+app_name+", body.grp-change-list .grp-changelist-results";
+        all_elements = $(document).find(app_selector);
+        // console.log("FOUND "+all_elements.length+" items with class name: "+app_name)
         //for each element, check to see if it has been initialized
 
 
@@ -1012,7 +1058,7 @@
                         config['order_by'] = order_by_value;
                     }
                 }
-                
+    
                 var component = new $.orderable_admin_list(element, new_id, config); 
 
                 

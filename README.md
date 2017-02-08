@@ -19,6 +19,8 @@ For inline admin forms:
 
 ![Screenshot of Django inline items](/../master/docs/screenshots/sort_by_columns.png?raw=true "Screenshot of Tabular Inline Items")
 
+![Screenshot of Django inline items](/../master/docs/screenshots/simplified.png?raw=true "Screenshot of simplified Inline Items")
+
 Requirements
 =====
 Requires Django and django-grappelli
@@ -52,6 +54,13 @@ class SubItemInline(TabularInlineOrderable):
 	#To override which field is used for ordering, add a class starting with order-by-[fieldname]. Make sure to also include
 	classes = ['django-inline-wrestler', 'order-by-position']
 
+	#Add any of the following css classes to this list to disable any of the buttons:
+	#'inline-wrestler-drag-disabled', 'inline-wrestler-move-disabled', 
+	#'inline-wrestler-move-bottom-disabled', 'inline-wrestler-move-top-disabled', 
+	#'inline-wrestler-move-up-disabled', 'inline-wrestler-move-down-disabled',
+	#'inline-wrestler-jump-disabled'
+
+
 class ObjectAdmin(AdminListOrderable):
 	"""
 	To bring drag-and-drop functionality to a changelist view:
@@ -64,4 +73,7 @@ class ObjectAdmin(AdminListOrderable):
     custom_list_order_by = 'priority'
 
 	inlines = [ItemInline, SubItemInline]
+
+
+
 ```

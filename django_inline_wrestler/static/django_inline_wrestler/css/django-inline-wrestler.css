@@ -1,31 +1,20 @@
 .ordering-buttons{
 	margin-bottom:5px;
 	margin-top:5px;
-	width:121px;
-	position: relative;
-	height:110px;
-
+	display: table;
+	vertical-align: middle;
 }
 .ordering-buttons ul{
-	position:absolute;
-	float:left;
+	display: table-cell;
+	vertical-align: middle;
 	margin-right: 5px;
 	overflow: visible;
+	float:none;
+	top:0;
 }
-.ordering-buttons .jump-container{
-	top:37px;
-	left:62px;
-	width:60px;
+.ordering-buttons ul li:first-child{
+	padding-left:0;
 }
-.ordering-buttons .move-container{
-	top:0px;
-	left:31px;
-}
-
-.ordering-buttons .drag-container{
-	top:37px;
-}
-
 .ordering-buttons .move-container li{
 	float:none;
 	margin:0;
@@ -45,29 +34,24 @@
 .ordering-buttons a:hover{
 	background-color:#ddd;					
 }
+.ordering-buttons a.disabled{
+	cursor: default;
+	pointer-events: none;
+	background-color: rgb(220, 220, 220);
+}
+
+
 
 .ordering-buttons .drag{
-
 	-webkit-border-radius: 5px;
-	border-radius: 5px;		
-	
+	border-radius: 5px;
 }
-.ordering-buttons .drag.disabled{
-	cursor: default;
-	pointer-events: none;
-	background-color: rgb(220, 220, 220);
-}
-.ordering-buttons .move_top{					
-	
+
+.ordering-buttons .move_top{						
 	-webkit-border-radius: 5px 5px 0px 0px;
-	border-radius: 5px 5px 0px 0px;
-	
+	border-radius: 5px 5px 0px 0px;	
 }
-.ordering-buttons .move_top.disabled{
-	cursor: default;
-	pointer-events: none;
-	background-color: rgb(220, 220, 220);
-}
+
 .ordering-buttons .move_up{					
 	
 	-webkit-border-radius: 0;
@@ -85,11 +69,7 @@
 	border-radius: 0;
 	border-top:0;			
 }
-.ordering-buttons .move_down.disabled{
-	cursor: default;
-	pointer-events: none;
-	background-color: rgb(220, 220, 220);
-}
+
 .ordering-buttons .move_bottom{
 	-webkit-border-radius: 0px 0px 5px 5px;	
 	border-radius: 0px 0px 5px 5px;		
@@ -97,11 +77,7 @@
 	border-top:0px;				
 	
 }
-.ordering-buttons .move_bottom.disabled{
-	cursor: default;
-	pointer-events: none;
-	background-color: rgb(220, 220, 220);
-}
+
 
 .ordering-buttons .new_value{
 	width:30px;
@@ -128,11 +104,10 @@
 	font-size: 16px;
 	padding: 7px 0 0 8px;
 }
-.ordering-buttons .apply_new_value.disabled{
-	cursor: default;
-	pointer-events: none;
-	background-color: rgb(220, 220, 220);
+.ordering-buttons .jump-container{
+	min-width: 56px;
 }
+
 .ordering-buttons .original_value{
 	display:none;
 }
@@ -153,6 +128,36 @@
 	display:block;
 }
 
+.inline-wrestler-drag-disabled .ordering-buttons .drag-container{
+	display: none !important;
+}
+.inline-wrestler-jump-disabled .ordering-buttons .jump-container{
+	display: none !important;
+}
+.inline-wrestler-move-disabled .ordering-buttons .move-container{
+	display: none !important;
+}
+.inline-wrestler-move-top-disabled .ordering-buttons .move_top_container{
+	display: none !important;
+}
+.inline-wrestler-move-top-disabled .ordering-buttons .move_up{
+	-webkit-border-radius: 5px 5px 0px 0px;
+	border-radius: 5px 5px 0px 0px;	
+	border-top: 1px solid #ccc;
+}
+.inline-wrestler-move-up-disabled .ordering-buttons .move_up_container{
+	display: none !important;
+}
+.inline-wrestler-move-down-disabled .ordering-buttons .move_down_container{
+	display: none !important;
+}
+.inline-wrestler-move-bottom-disabled .ordering-buttons .move_bottom_container{
+	display: none !important;
+}
+.inline-wrestler-move-bottom-disabled .ordering-buttons .move_down{
+	-webkit-border-radius: 0px 0px 5px 5px;	
+	border-radius: 0px 0px 5px 5px;		
+}
 
 .list-item-initialized .ordering-buttons + input{
 	display: none;
@@ -186,6 +191,7 @@
 	top:1px;
 	opacity: 0.5;
 }
+
 .sort-inited a.sort-desc:before{
 	background-position: 0 -2171px;
 	opacity: 1;

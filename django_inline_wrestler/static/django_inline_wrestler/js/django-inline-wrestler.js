@@ -1005,17 +1005,17 @@
             // </ul>
             return '<div class="ordering-buttons">\
                 <ul class="grp-tools drag-container">\
-                    <li><a href="#" title="Drag element" class="grp-icon grp-drag-handler drag" value="Drag">Drag</a></li>\
+                    <li class="drag_container"><a href="#" title="Drag element" class="grp-icon grp-drag-handler drag" value="Drag">Drag</a></li>\
                 </ul>\
                 <ul class="grp-tools move-container">\
-                    <li><a href="#" title="Move to top" class="grp-icon grp-close-handler move_top" >Move to top</a></li>\
-                    <li><a href="#" title="Move up" class="grp-icon grp-arrow-up-handler move_up" >Move Up</a></li>\
-                    <li><a href="#" title="Move down" class="grp-icon grp-arrow-down-handler move_down" >Move Down</a></li>\
-                    <li><a href="#" title="Move to bottom" class="grp-icon grp-open-handler move_bottom" >Move to bottom</a></li>\
+                    <li class="move_top_container"><a href="#" title="Move to top" class="grp-icon grp-close-handler move_top" >Move to top</a></li>\
+                    <li class="move_up_container"><a href="#" title="Move up" class="grp-icon grp-arrow-up-handler move_up" >Move Up</a></li>\
+                    <li class="move_down_container"><a href="#" title="Move down" class="grp-icon grp-arrow-down-handler move_down" >Move Down</a></li>\
+                    <li class="move_bottom_container"><a href="#" title="Move to bottom" class="grp-icon grp-open-handler move_bottom" >Move to bottom</a></li>\
                 </ul>\
                 <ul class="grp-tools jump-container">\
-                    <li><input type="text" class="new_value" name="New Value" value="" /></li>\
-                    <li><a href="#" title="Move to this position" class="apply_new_value" value="Move to this position">&gt;</a></li>\
+                    <li class="input_container"><input type="text" class="new_value" name="New Value" value="" /></li>\
+                    <li class="apply_container"><a href="#" title="Move to this position" class="apply_new_value" value="Move to this position">&gt;</a></li>\
                 </ul>\
                 <input type="text" class="readonly original_value" name="Original Value" value="" readonly="readonly">\
                 \

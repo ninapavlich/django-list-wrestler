@@ -17,8 +17,6 @@ For inline admin forms:
 
 ![Screenshot of Django inline items](/../master/docs/screenshots/screenshot.png?raw=true "Screenshot of Tabular Inline Items")
 
-![Screenshot of Django inline items](/../master/docs/screenshots/sort_by_columns.png?raw=true "Screenshot of Tabular Inline Items")
-
 ![Screenshot of Django inline items](/../master/docs/screenshots/simplified.png?raw=true "Screenshot of simplified Inline Items")
 
 Requirements

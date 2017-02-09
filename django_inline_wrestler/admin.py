@@ -38,5 +38,5 @@ class StackedInlineOrderable(admin.StackedInline):
 			'django_inline_wrestler/js/django-inline-wrestler.js' 
 		]
 
-	classes = ['django-inline-wrestler'] 
+	classes = ['django-inline-wrestler', 'django-inline-wrestler-stacked'] 
 	extra = 0

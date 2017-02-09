@@ -3,6 +3,10 @@
 	margin-top:5px;
 	display: table;
 	vertical-align: middle;
+	white-space: normal !important;
+}
+.ordering-buttons *{
+	white-space: normal !important;
 }
 .ordering-buttons ul{
 	display: table-cell;
@@ -208,4 +212,9 @@ body.grp-change-list table thead{
 }
 body.grp-change-list table tr{
 	width: 100%;
+}
+.django-inline-wrestler-stacked,
+.django-inline-wrestler-stacked .list-item-initialized .form-row,
+.django-inline-wrestler-stacked .list-item-initialized fieldset.grp-module{
+	width: auto !important;
 }

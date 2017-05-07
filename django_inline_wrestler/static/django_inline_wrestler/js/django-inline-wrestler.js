@@ -442,7 +442,7 @@
 
             
             this._listContainerHeaderHeight = $(this._listContainerHeader).find('.grp-th, th').height();
-            var runningY = this.is_changelist? this._listContainerHeaderHeight : 22;
+            var runningY = this.is_changelist? this._listContainerHeaderHeight : this.is_stacked? 0 : 22;
             var maxW = 0;
             for(var k=0; k<this.list_items.length; k++){
                 var list_item = this.list_items[k];

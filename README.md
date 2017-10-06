@@ -1,7 +1,7 @@
 django-inline-wrestler
 =======================
 
-Make django admin lists easier to sort with jQuery and Grappelli.
+Make django admin lists sortable, with drag-and-drop or single click re-ordering options. This plugin uses jQuery and is optimized for Grappelli.
 
 This plugin turns an ordinary order field into a high-powered sorting tool including:
 * Drag-and-Drop

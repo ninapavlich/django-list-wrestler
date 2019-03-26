@@ -1,0 +1,103 @@
+.django-list-wrestler a.icon{
+  font-size: 13px;
+  border-radius: 4px;
+  background: #f8f8f8;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 8px;
+  margin: 0;
+  color: #666;
+  border:1px solid #ddd;
+
+}
+.django-list-wrestler a.icon:hover,
+.django-list-wrestler a.icon:focus{
+  background: #ddd;
+  text-decoration: none;
+}
+.django-list-wrestler a.icon:active{
+  background: #79aec8;
+  border-color: #79aec8;
+  color:#fff;
+}
+.django-list-wrestler .icon span{
+  display:none;
+}
+.django-list-wrestler .icon:before{
+  font-size: 1.5em;
+}
+
+
+.django-list-wrestler .icon.move_top, 
+.django-list-wrestler .icon.move_up,
+.django-list-wrestler .icon.move_down, 
+.django-list-wrestler .icon.move_bottom{
+  padding: 0 8px 0 7px;
+}
+.django-list-wrestler .icon.move_top:before, 
+.django-list-wrestler .icon.move_up:before,
+.django-list-wrestler .icon.move_down:before, 
+.django-list-wrestler .icon.move_bottom:before{
+  display: block;
+  transform: rotate(90deg);
+  padding-bottom: 0.25em;
+  text-align: center;
+}
+
+.django-list-wrestler .icon.move_top{
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-width: 0;
+}
+.django-list-wrestler .icon.move_up,
+.django-list-wrestler .icon.move_down{
+  border-radius: 0;
+  border-bottom-width: 0;
+}
+
+.django-list-wrestler .icon.move_bottom{
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  
+}
+.django-list-wrestler .icon.drag:before{
+  content:"\2261";
+}
+.django-list-wrestler .icon.move_top:before{
+  content: "\00AB";
+}
+.django-list-wrestler .icon.move_up:before{
+  content:"\2039";
+}
+.django-list-wrestler .icon.move_down:before{
+  content:"\203A";
+}
+.django-list-wrestler .icon.move_bottom:before{
+  content:"\00BB";
+}
+.django-list-wrestler .icon.apply_new_value:before{
+ content:"\203A"; 
+}
+
+
+.django-list-wrestler .ordering-buttons .new_value{
+  width: 1.75em;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  padding: 4px;
+  margin-bottom: 0;
+}
+.django-list-wrestler .ordering-buttons .jump-container .input_container,
+.django-list-wrestler .ordering-buttons .jump-container .apply_container{
+  float:left;
+}
+.django-list-wrestler .ordering-buttons .jump-container{
+  min-width: 60px;
+}
+.django-list-wrestler .ordering-buttons .jump-container .apply_container a{
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left:0;
+  display: block;
+  padding: 2px 8px 5px 8px;
+}

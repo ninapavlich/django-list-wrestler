@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
 #this is a test
-setup(name = 'django-inline-wrestler',
-      description = 'Wrestle your django inlines with jQuery and Grappelli.',
-      version = '5.4',
-      url = 'https://github.com/ninapavlich/django-inline-wrestler',
+setup(name = 'django-list-wrestler',
+      description = 'Make django admin lists easier to sort and collapse.',
+      version = '6.0',
+      url = 'https://github.com/ninapavlich/django-list-wrestler',
       author = 'Nina Pavlich',
       author_email='nina@ninalp.com',
       license = 'BSD',

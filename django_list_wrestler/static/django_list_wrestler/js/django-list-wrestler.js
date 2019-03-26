@@ -32,11 +32,14 @@
         this._container = element;
         this._listContainer = null;
         this._listContainerHeader = null;
-        this._listContainerHeaderHeight = null;
+        this._listContainerAddRow = null;
+        // this._listContainerHeaderHeight = null; todo -- remove
         this.list_item_hash = {};
         this.list_items = [];
-        this.is_changelist = $('.grp-change-list').length > 0;
+        this.is_changelist = $('#result_list').length > 0;
         this.is_stacked = $(element).hasClass('grp-stacked');
+
+        console.log("is changelist? "+this.is_changelist+" is stacked? "+this.is_stacked)
         
         //CONFIG:
         this.on_item_change_callback = this.options.onItemChangePosition;
@@ -47,7 +50,7 @@
         this.request_update_timeout_duration = 1;
 
         this.realign_interval;
-        this.realign_interval_duration = 500;
+        this.realign_interval_duration = 5000;//todo
 
         this.drag_offset_x = 0;
         this.drag_offset_y = 0;
@@ -60,7 +63,7 @@
         //PUBLIC FUNCTIONS //////////////
         /////////////////////////////////
         this.getVersion = function(){
-            return '5.3';
+            return '6.0';
         }
         
         this.moveToTop = function(item){
@@ -138,9 +141,19 @@
         this.moveDrag = function(item, e){
             var mousex = e.pageX;
             var mousey = e.pageY;
-            var header_position = $(this._listContainerHeader).offset()
-            var relative_mouse_y = mousey - header_position.top;
-            var relative_mouse_x = mousex - header_position.left;
+
+            if(this._listContainerHeader.length > 0){
+                var header_position = $(this._listContainerHeader).offset();
+                var header_offset_top = header_position.top;
+                var header_offset_left = header_position.left;
+            }else{
+                var header_position = $(this._listContainer).offset();
+                var header_offset_top = header_position.top;
+                var header_offset_left = header_position.left;
+            }
+            
+            var relative_mouse_y = mousey - header_offset_top;
+            var relative_mouse_x = mousex - header_offset_left;
             
             item.setTopPosition(relative_mouse_y - this.drag_offset_y, 0);
             item.setLeftPosition(relative_mouse_x - this.drag_offset_x, 0);  
@@ -150,10 +163,10 @@
             //item.x = 0
             item.setLeftPosition(0, 0);
             this._sortItemsByTop(item, true); 
-            this._pauseInterval(500);
+            this._pauseInterval(1000);
         }
         this.updateList = function(){
-            this._pauseInterval(500);
+            this._pauseInterval(1000);
             this._checkDeleted();
             this._sortItems();
             this._realignItems();
@@ -182,18 +195,16 @@
         //LISTS//
         this._initList = function(element, options) {  
             
+            console.log("_initList on element "+element)
             //Initialize List:
             //Go through each item in the list. 
             //If it has a position sort by it. If it doesn't have a position, then auto-assign a position
             //If item is not initialized, then initialize it
       
-            this._initListStyles(element);
-            this._initListEvents(element);
             
             
-
-            var list_items = $(element).find('.grp-tbody, tr.grp-row, .grp-items > *').not(".grp-empty-form")
-            // console.log("Found "+list_items.length+" list items in list "+this.id)
+            var list_items = this.is_changelist? $(element).find("tbody > tr") : $(element).find(".has_original");
+            console.log("Found "+list_items.length+" list items in list "+this.id)
 
 
             for( var k=0; k < list_items.length; k++ ){
@@ -221,6 +232,9 @@
                 }
 
             }
+
+            this._initListStyles(element);
+            this._initListEvents(element);
 
 
             this._sortItems();
@@ -261,9 +275,14 @@
             }, this.realign_interval_duration)
         }
         this._initListStyles = function(container){
-            this._listContainer = $(this._container).find(".grp-module.grp-table, table, .grp-items");
-            this._listContainerHeader = $(this._listContainer).find(".grp-thead, thead, .grp-collapse-handler");
-            this._listContainerHeaderHeight = $(this._listContainerHeader).height();
+            if(this.list_items.length == 0){
+                console.warn("NO LIST ITEMS")
+                return;
+            }
+            this._listContainer = $(this.list_items[0].element).parent();
+            this._listContainerHeader = $(this._listContainer).find("h2");
+            this._listContainerAddRow = $(this._listContainer).find(".add-row");
+
             this._alignColumns();
             this._populateColumnSortLinks();
         };
@@ -417,21 +436,28 @@
             item.setZIndex(500);
 
             //Realign:
-            this._listContainerHeaderHeight = $(this._listContainerHeader).find('.grp-th, th').height();
-            var runningY = this._listContainerHeaderHeight;
-            var maxW = 0;
-            for(var k=0; k<this.list_items.length; k++){
-                list_item = this.list_items[k];
-                if(apply_update || list_item != item){
-                    list_item.setTopPosition(runningY, 100)
-                }
-                runningY += list_item.getHeight();
-                maxW = Math.max(maxW, list_item.getWidth());
-            }
-            $(this._listContainer).height(runningY);
-            if(this.is_stacked==true){
-                $(this._listContainer).width(maxW);    
-            }
+
+            //TODO -- remove
+            // this._listContainerHeaderHeight = $(this._listContainerHeader).outerHeight() || 0;
+            // console.log("_listContainerHeaderHeight a? "+this._listContainerHeaderHeight)
+            // var runningY = this._listContainerHeaderHeight;
+            // var maxW = 0;
+            // for(var k=0; k<this.list_items.length; k++){
+            //     list_item = this.list_items[k];
+            //     if(apply_update || list_item != item){
+            //         list_item.setTopPosition(runningY, 100)
+            //     }
+            //     runningY += list_item.getHeight();
+            //     maxW = Math.max(maxW, list_item.getWidth());
+            // }
+            
+            // $(this._listContainerAddRow).css("top", runningY);
+            // $(this._listContainer).height(runningY);
+            // if(this.is_stacked==true){
+            //     $(this._listContainer).width(maxW);    
+            // }
+
+            this._realignItems(100);
             
 
         }
@@ -441,26 +467,17 @@
             }
 
             
-            this._listContainerHeaderHeight = $(this._listContainerHeader).find('.grp-th, th').height();
-            var runningY = this.is_changelist? this._listContainerHeaderHeight : this.is_stacked? 0 : 22;
+            this._listContainerHeaderHeight = $(this._listContainerHeader).outerHeight() || 0;
+            console.log("_listContainerHeaderHeight b? "+this._listContainerHeaderHeight)
+            var runningY = this._listContainerHeaderHeight;
             var maxW = 0;
             for(var k=0; k<this.list_items.length; k++){
                 var list_item = this.list_items[k];
                 list_item.setTopPosition(runningY, duration)
                 runningY += list_item.getHeight();
                 maxW = Math.max(maxW, list_item.getWidth());
-
-                if(this.is_changelist){
-                    $(list_item.element).removeClass('grp-row-even');
-                    $(list_item.element).removeClass('grp-row-odd');
-                    if(k%2==0){
-                        $(list_item.element).addClass('grp-row-even');
-                    }else{
-                        $(list_item.element).addClass('grp-row-odd');
-                    }
-                }
             }
-
+            $(this._listContainerAddRow).css("top", runningY);
             $(this._listContainer).height(runningY);
             if(this.is_stacked==true){
                 $(this._listContainer).width(maxW);    
@@ -721,7 +738,6 @@
             if(typeof duration == "undefined"){
                 duration = 200;
             }
-        
             if(duration == 0){
                 $(this._container).css("top", top_position);
             }else{
@@ -818,15 +834,11 @@
 
         }
         this._initContent = function(item){
-            var positionContainerSelector = ".grp-td."+this.options['order_by']+", td.field-"+this.options['order_by']+", .form-row."+this.options['order_by']+" .field-box."+this.options['order_by']+" .c-2";
-            this._positionContainer = $(item).find(positionContainerSelector);
-            if(this._positionContainer.length == 0){
-                //HACK -- try more general selector only if specific item wasn't found.
-                //This happens when an item is alone on its own line.
-                this._positionContainer = $(item).find(".form-row."+this.options['order_by']+" .c-2");
-            }
-            this._inputContainer = $(this._positionContainer).find('input:text')[0];
 
+            var inputSelector = 'input[name$="-'+this.options['order_by']+'"]';
+            this._inputContainer = $(item).find(inputSelector)[0];
+            this._positionContainer = $(this._inputContainer).parent();
+            
             //ADD BUTTONS
             $(this._positionContainer).prepend(this._createButtons());
             this._buttonContainer = $(this._positionContainer).find('.ordering-buttons');
@@ -837,13 +849,11 @@
             //PARSE INITIAL VALUE:
             this._originalHasValue = this._hasValue = $(this._inputContainer).val() != "";
             this._position = isNumber($(this._inputContainer).val())? parseInt($(this._inputContainer).val()) : 0;
-            
-            
+                       
 
             this._originalPosition = this._position;
             $(this._originalPositionContainer).attr('value', this._originalPosition)
-            //console.log("_originalPosition: "+this._originalPosition+" this._position: "+this._position+" val: "+$(this._originalPositionContainer).val())
-
+            
             if(this.isEmpty() == false){
                 $(this._inputChangeContainer).attr('value', this._originalPosition)    
             }
@@ -1011,28 +1021,19 @@
             
         }
         this._createButtons = function(){
-            // <ul class="grp-tools">
-            //     <li><a href="#" class="grp-icon grp-viewsite-link"></a></li>
-            //     <li><a href="#" class="grp-icon grp-add-handler"></a></li>
-            //     <li><a href="#" class="grp-icon grp-delete-handler"></a></li>
-            //     <li><a href="#" class="grp-icon grp-remove-handler"></a></li>
-            //     <li><a href="#" class="grp-icon grp-drag-handler"></a></li>
-            //     <li><a href="#" class="grp-icon grp-open-handler"></a></li>
-            //     <li><a href="#" class="grp-icon grp-close-handler"></a></li>
-            // </ul>
             return '<div class="ordering-buttons">\
-                <ul class="grp-tools drag-container">\
-                    <li class="drag_container"><a href="#" title="Drag element" class="grp-icon grp-drag-handler drag" value="Drag">Drag</a></li>\
+                <ul class="drag-container">\
+                    <li class="drag_container"><a href="#" title="Drag element" class="icon drag-handler drag" value="Drag"><span>Drag</span></a></li>\
                 </ul>\
-                <ul class="grp-tools move-container">\
-                    <li class="move_top_container"><a href="#" title="Move to top" class="grp-icon grp-close-handler move_top" >Move to top</a></li>\
-                    <li class="move_up_container"><a href="#" title="Move up" class="grp-icon grp-arrow-up-handler move_up" >Move Up</a></li>\
-                    <li class="move_down_container"><a href="#" title="Move down" class="grp-icon grp-arrow-down-handler move_down" >Move Down</a></li>\
-                    <li class="move_bottom_container"><a href="#" title="Move to bottom" class="grp-icon grp-open-handler move_bottom" >Move to bottom</a></li>\
+                <ul class="move-container">\
+                    <li class="move_top_container"><a href="#" title="Move to top" class="icon close-handler move_top" ><span>Move to top</span></a></li>\
+                    <li class="move_up_container"><a href="#" title="Move up" class="icon arrow-up-handler move_up" ><span>Move Up</span></a></li>\
+                    <li class="move_down_container"><a href="#" title="Move down" class="icon arrow-down-handler move_down" ><span>Move Down</span></a></li>\
+                    <li class="move_bottom_container"><a href="#" title="Move to bottom" class="icon open-handler move_bottom" ><span>Move to bottom</span></a></li>\
                 </ul>\
-                <ul class="grp-tools jump-container">\
+                <ul class="jump-container">\
                     <li class="input_container"><input type="text" class="new_value" name="New Value" value="" /></li>\
-                    <li class="apply_container"><a href="#" title="Move to this position" class="apply_new_value" value="Move to this position">&gt;</a></li>\
+                    <li class="apply_container"><a href="#" title="Move to this position" class="icon apply_new_value" value="Move to this position"><span>Go</span></a></li>\
                 </ul>\
                 <input type="text" class="readonly original_value" name="Original Value" value="" readonly="readonly">\
                 \
@@ -1048,45 +1049,50 @@
     /* INITIALIZATION */
     $.init_orderable_admin_lists = function(config) { //Using only one method off of $.fn  
         
-        app_name = "django-inline-wrestler";
-        app_selector = "."+app_name+":not(.inline-related), body.grp-change-list .grp-changelist-results";
+        app_name = "django-list-wrestler";
+
+        var changelist_selector = "#result_list";
+        var inline_item_selector = "."+app_name+":not(.inline-related)";
+        app_selector = changelist_selector+", "+inline_item_selector;
         all_elements = $(document).find(app_selector);
-        // console.log("FOUND "+all_elements.length+" items with selector: "+app_selector)
+        console.log("FOUND "+all_elements.length+" items with selector: "+app_selector)
         //for each element, check to see if it has been initialized
 
 
         for(var i=0; i<all_elements.length; i++){
 
             var element = all_elements[i];
-            is_initialized = $(element).hasClass( app_name+'-initialized' )
+            is_initialized = $(element).hasClass( app_name+'-initialized' );
+
             
             if(is_initialized){
                 //carry on
             }else{
 
                 var new_id = app_name+"_id_"+($.orderable_admin_list.registered_elements.length);
-                //console.log(element+" "+new_id+" "+config+" classes "+$(element).attr('class'))
+                var classes = $(element).attr('class') || "";
+                console.log(element+" "+new_id+" "+config+" classes "+classes)
 
-                var order_by_value = config['order_by']
-                var class_names = $(element).attr('class').split(' ');
+                // Determine which attribute to use for ordering this item:
+                if(window['custom_list_order_by']!=undefined){
+                    config['order_by'] = window['custom_list_order_by'];
+                }
+
+                var order_by_value = config['order_by'];
+                var class_names = classes.split(' ');
                 for(index in class_names){
                     class_name = class_names[index]
                     if(class_name.indexOf("order-by-")>=0){
-                        order_by_value = class_name.split("order-by-")[1]
+                        order_by_value = class_name.split("order-by-")[1];
                         config['order_by'] = order_by_value;
                     }
                 }
 
-                if(window['custom_list_order_by']!=undefined){
-                    config['order_by'] = window['custom_list_order_by'];
-                }
-                
                 var component = new $.orderable_admin_list(element, new_id, config); 
 
-                
+                $(element).addClass( app_name );  
                 $(element).addClass( app_name+'-initialized' );  
                 $(element).addClass( new_id );
-
                 $.orderable_admin_list.registered_hash[new_id] = component;
                 $.orderable_admin_list.registered_elements.push(component);
             }

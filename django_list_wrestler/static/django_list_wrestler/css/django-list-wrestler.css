@@ -1,0 +1,87 @@
+.django-list-wrestler .ordering-buttons .original_value{
+  display:none;
+}
+.django-list-wrestler-initialized > table > tbody,
+.django-list-wrestler-initialized > tbody,
+.django-list-wrestler-initialized.django-list-wrestler-stacked{
+	display:block;
+	position: relative;
+}
+.django-list-wrestler .add-row{
+	position: absolute;
+	width: 100%;
+}
+.django-list-wrestler .ordering-buttons{
+  margin-bottom:5px;
+  margin-top:5px;
+  display: table;
+  vertical-align: middle;
+  white-space: normal !important;
+
+	border-spacing: 5px;
+	border-collapse: separate;
+}
+.django-list-wrestler .ordering-buttons a.disabled{
+  cursor: default;
+  pointer-events: none;
+}
+
+.django-list-wrestler .ordering-buttons *{
+  white-space: normal !important;
+}
+.django-list-wrestler .ordering-buttons ul{
+  display: table-cell;
+  vertical-align: middle;
+  overflow: visible;
+  float:none;
+  top:0;
+  padding:0;
+	margin:0;
+}
+.django-list-wrestler .ordering-buttons ul li:first-child{
+  padding-left:0;
+}
+.django-list-wrestler .ordering-buttons li{
+	list-style-type:none;
+}
+.django-list-wrestler .ordering-buttons .move-container li{
+  float:none;
+  margin:0;
+  padding:0;
+}
+
+.django-list-wrestler .ordering-buttons .move_bottom, 
+.django-list-wrestler .ordering-buttons .move_down,
+.django-list-wrestler .ordering-buttons .move_up,
+.django-list-wrestler .ordering-buttons .move_top{
+  display:block;
+}
+
+.inline-wrestler-drag-disabled .ordering-buttons .drag-container{
+  display: none !important;
+}
+.inline-wrestler-jump-disabled .ordering-buttons .jump-container{
+  display: none !important;
+}
+.inline-wrestler-move-disabled .ordering-buttons .move-container{
+  display: none !important;
+}
+.inline-wrestler-move-top-disabled .ordering-buttons .move_top_container{
+  display: none !important;
+}
+.inline-wrestler-move-up-disabled .ordering-buttons .move_up_container{
+  display: none !important;
+}
+.inline-wrestler-move-down-disabled .ordering-buttons .move_down_container{
+  display: none !important;
+}
+.inline-wrestler-move-bottom-disabled .ordering-buttons .move_bottom_container{
+  display: none !important;
+}
+
+.django-list-wrestler .list-item-initialized .ordering-buttons + input,
+.django-list-wrestler .list-item-initialized .ordering-buttons + label,
+.django-list-wrestler .list-item-initialized .ordering-buttons + label + input{
+  display: none;
+}
+

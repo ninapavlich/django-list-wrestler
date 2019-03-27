@@ -1,0 +1,170 @@
+.django-list-wrestler-initialized > .grp-table{
+  position: relative;
+}
+
+.ordering-buttons a{
+  border: 1px solid #ccc;
+  
+  background-color:#eee;
+  text-indent: -9999px;
+  width: 26px;
+  height: 20px;
+
+  margin:0;
+}
+.ordering-buttons a:hover{
+  background-color:#ddd;          
+}
+.ordering-buttons a.icon.disabled{
+  background-color: rgb(220, 220, 220);
+}
+
+
+
+.ordering-buttons .drag{
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.ordering-buttons .move_top{            
+  -webkit-border-radius: 5px 5px 0px 0px;
+  border-radius: 5px 5px 0px 0px; 
+}
+
+.ordering-buttons .move_up{         
+  
+  -webkit-border-radius: 0;
+  border-radius: 0; 
+  border-top:0; 
+}
+.ordering-buttons .move_up.disabled{
+  cursor: default;  
+  pointer-events: none;
+  background-color: rgb(220, 220, 220);
+}
+.ordering-buttons .move_down{
+  
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  border-top:0;     
+}
+
+.ordering-buttons .move_bottom{
+  -webkit-border-radius: 0px 0px 5px 5px; 
+  border-radius: 0px 0px 5px 5px;   
+
+  border-top:0px;       
+  
+}
+
+
+.ordering-buttons .new_value{
+  width:30px;
+  height:30px;
+
+  font-size:11px;
+  text-align: right;
+  -webkit-border-radius: 5px 0px 0px 5px; 
+  border-radius: 5px 0px 0px 5px; 
+
+  margin-right:-4px;
+  position:static;
+}
+.ordering-buttons .apply_new_value{
+
+
+  -webkit-border-radius: 0px 5px 5px 0px;
+  border-radius: 0px 5px 5px 0px;
+  
+  width:18px;
+  height:21px;
+  text-indent: 0;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 7px 0 0 8px;
+}
+.ordering-buttons .jump-container{
+  min-width: 56px;
+}
+
+
+.ordering-buttons .delete{
+  
+  -webkit-border-radius: 5px 0px 0px 5px;
+  border-radius: 5px 0px 0px 5px;   
+
+  margin-left:5px;
+  border-right:0; 
+
+}
+
+
+
+
+.inline-wrestler-move-top-disabled .ordering-buttons .move_up{
+  -webkit-border-radius: 5px 5px 0px 0px;
+  border-radius: 5px 5px 0px 0px; 
+  border-top: 1px solid #ccc;
+}
+
+.inline-wrestler-move-bottom-disabled .ordering-buttons .move_down{
+  -webkit-border-radius: 0px 0px 5px 5px; 
+  border-radius: 0px 0px 5px 5px;   
+}
+
+
+.sort-inited a{
+  display: inline-block;
+  width: 100%;
+  position: relative;
+}
+.sort-inited a:before{
+  content:" ";
+  width: 24px;
+  height: 24px;
+  background-image: url(../images/icons-s846f870921.png);
+  background-repeat: no-repeat;
+  background-position: 0 -2127px;
+  position: absolute;
+  right:0;
+  top:-7px;
+  opacity: 0.5;
+}
+.sort-inited a:after{
+  content:" ";
+  width: 24px;
+  height: 24px;
+  background-image: url(../images/icons-s846f870921.png);
+  background-repeat: no-repeat;
+  background-position: 0 -2039px;
+  position: absolute;
+  right:0;
+  top:1px;
+  opacity: 0.5;
+}
+
+.sort-inited a.sort-desc:before{
+  background-position: 0 -2171px;
+  opacity: 1;
+}
+.sort-inited a.sort-asc:after{
+  background-position: 0 -2083px;
+  opacity: 1;
+}
+body.grp-change-list table{
+  width: 100%;
+}
+body.grp-change-list table thead{
+  width: 100%;
+}
+body.grp-change-list table tr{
+  width: 100%;
+}
+.django-list-wrestler .grp-items{
+  position:relative;
+}
+.django-list-wrestler-stacked,
+.django-list-wrestler-stacked .list-item-initialized .form-row,
+.django-list-wrestler-stacked .list-item-initialized fieldset.grp-module{
+  width: auto !important;
+}

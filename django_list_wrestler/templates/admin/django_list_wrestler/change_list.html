@@ -1,9 +1,16 @@
 {% extends "admin/change_list.html" %}
 
 {% block result_list %}
+{{block.super}}
+
 <script type="text/javascript" charset="utf-8">
     var custom_list_order_by = '{{ORDER_BY}}';
+
+    {% for class in custom_list_settings %}
+    document.getElementById("result_list").classList.add("{{class}}");
+    {% endfor %}
+
 </script>
 
-{{block.super}}
+
 {% endblock %}

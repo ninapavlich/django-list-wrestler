@@ -6,6 +6,9 @@ class AdminListOrderable(admin.ModelAdmin):
 	def changelist_view(self, request, extra_context=None):
 		extra_context = extra_context or {}
 		extra_context['ORDER_BY'] = self.custom_list_order_by or 'order'
+		if hasattr(self, 'custom_list_settings'):
+			extra_context['custom_list_settings'] = self.custom_list_settings
+		
 		return super(AdminListOrderable, self).changelist_view(request, extra_context=extra_context)
 	class Media:        
 		css = {

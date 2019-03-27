@@ -1,3 +1,6 @@
+.django-list-wrestler a.icon.disabled{
+  background-color: #efefef;
+}
 .django-list-wrestler a.icon{
   font-size: 13px;
   border-radius: 4px;
@@ -10,8 +13,7 @@
   border:1px solid #ddd;
 
 }
-.django-list-wrestler a.icon:hover,
-.django-list-wrestler a.icon:focus{
+.django-list-wrestler a.icon:hover{
   background: #ddd;
   text-decoration: none;
 }
@@ -100,4 +102,16 @@
   border-left:0;
   display: block;
   padding: 2px 8px 5px 8px;
+}
+
+.django-list-wrestler .sortable-column{
+  color:#79aec8;
+  text-decoration: underline;
+}
+
+.django-list-wrestler .sortable-column.sort-asc:after{
+  content:" \25b2";
+}
+.django-list-wrestler .sortable-column.sort-desc:after{
+  content:" \25bc";
 }

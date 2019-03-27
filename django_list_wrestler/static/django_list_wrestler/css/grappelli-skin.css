@@ -15,9 +15,7 @@
 .ordering-buttons a:hover{
   background-color:#ddd;          
 }
-.ordering-buttons a.disabled{
-  cursor: default;
-  pointer-events: none;
+.ordering-buttons a.icon.disabled{
   background-color: rgb(220, 220, 220);
 }
 

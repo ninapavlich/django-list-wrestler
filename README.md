@@ -60,10 +60,10 @@ class SubItemInline(TabularInlineOrderable):
 	fields = ('position', 'name', 'txtid')
 	prepopulated_fields = {'txtid': ('name',)}
 	
-	#To override which field is used for ordering, add a class starting with order-by-[fieldname]. Make sure to also include
+	# To override which field is used for ordering, add a class starting with order-by-[fieldname]. Make sure to also include 'django-list-wrestler' in the list:
 	classes = ['django-list-wrestler', 'order-by-position']
 
-	#Add any of the following css classes to this list to disable any of the buttons:
+	# Add any of the following css classes to this list to disable any of the buttons:
 	#'inline-wrestler-drag-disabled', 'inline-wrestler-move-disabled', 
 	#'inline-wrestler-move-bottom-disabled', 'inline-wrestler-move-top-disabled', 
 	#'inline-wrestler-move-up-disabled', 'inline-wrestler-move-down-disabled',
@@ -90,11 +90,23 @@ class ObjectAdmin(AdminListOrderable):
 	fields = ('priority', 'title')
 	list_editable = ('priority',)
 
-	change_list_template = 'admin/django_list_wrestler/change_list.html'
-    custom_list_order_by = 'priority'
+	# REQUIRED: Set which field is used for ordering:
+	custom_list_order_by = 'priority'
+
+	# OPTIONAL: To disable any of the sorting functions:
+    custom_list_settings = ['inline-wrestler-drag-disabled']
+    #'inline-wrestler-drag-disabled', 'inline-wrestler-move-disabled', 
+	#'inline-wrestler-move-bottom-disabled', 'inline-wrestler-move-top-disabled', 
+	#'inline-wrestler-move-up-disabled', 'inline-wrestler-move-down-disabled',
+	#'inline-wrestler-jump-disabled'
 
 	inlines = [ItemInline, SubItemInline]
+
+	
 ```
+
+
+
 
 
 * Collapsing Tree Change List Example *

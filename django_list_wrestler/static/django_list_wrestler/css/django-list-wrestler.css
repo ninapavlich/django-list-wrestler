@@ -21,6 +21,11 @@
 	border-spacing: 5px;
 	border-collapse: separate;
 }
+.django-list-wrestler .ordering-buttons a.disabled{
+  cursor: default;
+  pointer-events: none;
+}
+
 .django-list-wrestler .ordering-buttons *{
   white-space: normal !important;
 }
@@ -74,7 +79,9 @@
   display: none !important;
 }
 
-.django-list-wrestler .list-item-initialized .ordering-buttons + input{
+.django-list-wrestler .list-item-initialized .ordering-buttons + input,
+.django-list-wrestler .list-item-initialized .ordering-buttons + label,
+.django-list-wrestler .list-item-initialized .ordering-buttons + label + input{
   display: none;
 }
 

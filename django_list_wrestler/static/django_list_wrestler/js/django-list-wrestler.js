@@ -33,13 +33,12 @@
         this._listContainer = null;
         this._listContainerHeader = null;
         this._listContainerAddRow = null;
-        // this._listContainerHeaderHeight = null; todo -- remove
         this.list_item_hash = {};
         this.list_items = [];
         this.is_changelist = $('#result_list').length > 0;
-        this.is_stacked = $(element).hasClass('grp-stacked');
+        this.is_stacked = $(element).hasClass('django-list-wrestler-stacked');
 
-        console.log("is changelist? "+this.is_changelist+" is stacked? "+this.is_stacked)
+        // console.log("is changelist? "+this.is_changelist+" is stacked? "+this.is_stacked)
         
         //CONFIG:
         this.on_item_change_callback = this.options.onItemChangePosition;
@@ -50,7 +49,7 @@
         this.request_update_timeout_duration = 1;
 
         this.realign_interval;
-        this.realign_interval_duration = 5000;//todo
+        this.realign_interval_duration = 10000000;
 
         this.drag_offset_x = 0;
         this.drag_offset_y = 0;
@@ -71,14 +70,17 @@
             item.notEmpty();
             item.setPosition(-1);
 
-            this.updateList();
+            this.updateList("moveToTop");
         }
-        this.moveToBottom = function(item){
+        this.moveToBottom = function(item, request_update){
             //console.log("moveToBottom")
             item.notEmpty();
             item.setPosition(this.list_items.length);
 
-           this.updateList();
+            if(request_update){
+                this.updateList("moveToBottom");     
+            }
+           
         }
         this.moveUp = function(item){
             
@@ -91,7 +93,7 @@
             item.setPosition(previous_index);
 
 
-            this.updateList();
+            this.updateList("moveUp");
             
         }
         this.moveDown = function(item){
@@ -109,7 +111,7 @@
 
      
 
-            this.updateList();
+            this.updateList("moveDown");
         }
         this.moveTo = function(item, index){
 
@@ -126,7 +128,7 @@
             //console.log("moveTo: "+index+" moving_down? "+moving_down+" half_index? "+half_index)    
             item.setPosition(half_index)
 
-            this.updateList();
+            this.updateList("moveTo");
         }
         this.startDrag = function(item, e){
 
@@ -165,12 +167,12 @@
             this._sortItemsByTop(item, true); 
             this._pauseInterval(1000);
         }
-        this.updateList = function(){
+        this.updateList = function(debug_reason){
+            // console.log("updateList because "+debug_reason)
             this._pauseInterval(1000);
             this._checkDeleted();
             this._sortItems();
-            this._realignItems();
-
+            this._realignItems(400, "updateList");
         }
         this.deleteItem = function(item){
             
@@ -185,7 +187,7 @@
                 //weird
             }
 
-            this.updateList();
+            this.updateList("deleteItem");
         }
 
         /////////////////////////////////
@@ -195,7 +197,7 @@
         //LISTS//
         this._initList = function(element, options) {  
             
-            console.log("_initList on element "+element)
+            // console.log("_initList on element "+element)
             //Initialize List:
             //Go through each item in the list. 
             //If it has a position sort by it. If it doesn't have a position, then auto-assign a position
@@ -203,8 +205,8 @@
       
             
             
-            var list_items = this.is_changelist? $(element).find("tbody > tr") : $(element).find(".has_original");
-            console.log("Found "+list_items.length+" list items in list "+this.id)
+            var list_items = this.is_changelist? $(element).find("tbody > tr") : $(element).find(".has_original, [class*='dynamic']");
+            // console.log("Found "+list_items.length+" list items in list "+this.id)
 
 
             for( var k=0; k < list_items.length; k++ ){
@@ -222,7 +224,7 @@
                     var new_id = this.id+"_"+(this.list_items.length);
                     var component = new $.orderable_admin_list_item(list_item, new_id, this, options); 
                     
-                    this.moveToBottom(component);
+                    this.moveToBottom(component, false);
 
                     $(list_item).addClass( 'list-item-initialized' );  
                     $(list_item).addClass( new_id );
@@ -238,13 +240,20 @@
 
 
             this._sortItems();
-            this._realignItems(0);
+            this._realignItems(0, "_initList");
 
             window['list_items'] = this.list_items
 
             
             
             this._startResizeInterval();
+
+            var parent_reference = this;
+            setTimeout(function(){
+                parent_reference.updateList("after init");     
+            }, 500);
+
+            
 
         };
         this._clearEmpties = function(){
@@ -270,7 +279,7 @@
             var parent_reference = this;
             clearInterval(this.realign_interval)   
             this.realign_interval = setInterval(function(){
-                parent_reference._realignItems(0);
+                parent_reference._realignItems(0, "_startResizeInterval");
                 parent_reference._alignColumns();
             }, this.realign_interval_duration)
         }
@@ -280,7 +289,7 @@
                 return;
             }
             this._listContainer = $(this.list_items[0].element).parent();
-            this._listContainerHeader = $(this._listContainer).find("h2");
+            this._listContainerHeader = this.is_stacked? $(this._container).find("h2") : $(this._container).find("thead tr");  
             this._listContainerAddRow = $(this._listContainer).find(".add-row");
 
             this._alignColumns();
@@ -292,27 +301,37 @@
             }
 
             var parent_reference = this
-            $(container).find(".grp-add-handler").bind("click", function(e){
+            $(container).find(".grp-add-handler, .add-row a").bind("click", function(e){
                 setTimeout(function(){
                     parent_reference._initList(parent_reference._container, parent_reference.options);     
                     parent_reference._clearEmpties();
-                },100)
+                }, 500)
 
                 setTimeout(function(){
                     parent_reference._alignColumns();
                 },1000);
                 
             })
+
+            /* when user removes an existing item */
             $(container).find(".grp-delete-handler").bind("click", function(e){
                 setTimeout(function(){
-                    parent_reference.updateList()
+                    parent_reference.updateList("delete handler click");
                 },500)
             })
-            $(container).find(".grp-remove-handler").bind("click", function(e){
+
+            /* when user removes a newly added but unsaved item */
+            $(container).find(".grp-remove-handler, .inline-deletelink").bind("click", function(e){
                 setTimeout(function(){
                     parent_reference._checkForRemovedItems()
                 },500)
             })
+
+
+            $( window ).resize(function() {
+                parent_reference._realignItems(0, "resize");
+                parent_reference._alignColumns();
+            });
             
         };
         this._checkDeleted = function(){
@@ -362,8 +381,7 @@
                        
         }
         this._sortItemsByProperty = function(property, ascending){
-            //console.log("sort items by "+property+" ascending: "+ascending)
-
+            
             var on = ascending? 1 : -1;
             var off = ascending? -1 : 1;
             //first go through and sort items by order
@@ -377,7 +395,7 @@
                 var aIsDeleted = a.isDeleted()
                 var bIsDeleted = b.isDeleted()
 
-                //console.log("apos: "+apos+" bpos: "+bpos+' aIsEmpty: '+aIsEmpty+" bIsEmpty: "+bIsEmpty+" aIsDeleted: "+aIsDeleted+" bIsDeleted: "+bIsDeleted)
+                // console.log("apos: "+apos+" bpos: "+bpos+' aIsEmpty: '+aIsEmpty+" bIsEmpty: "+bIsEmpty+" aIsDeleted: "+aIsDeleted+" bIsDeleted: "+bIsDeleted)
 
                 if(apos == bpos) return 0;
 
@@ -457,31 +475,36 @@
             //     $(this._listContainer).width(maxW);    
             // }
 
-            this._realignItems(100);
+            this._realignItems(100, "_sortItemsByTop");
             
 
         }
-        this._realignItems = function(duration){
+        this._realignItems = function(duration, debug_reason){
+            // console.log("_realignItems() because "+debug_reason)
             if(typeof duration == "undefined"){
                 duration = 400;
             }
 
-            
-            this._listContainerHeaderHeight = $(this._listContainerHeader).outerHeight() || 0;
-            console.log("_listContainerHeaderHeight b? "+this._listContainerHeaderHeight)
-            var runningY = this._listContainerHeaderHeight;
+            var header_width = $(this._listContainerHeader).outerWidth();
+            var runningY = this.is_stacked? $(this._listContainerHeader).outerHeight() : 0;
             var maxW = 0;
             for(var k=0; k<this.list_items.length; k++){
+
+
                 var list_item = this.list_items[k];
                 list_item.setTopPosition(runningY, duration)
                 runningY += list_item.getHeight();
                 maxW = Math.max(maxW, list_item.getWidth());
+                $(list_item.element).css("width", header_width);
             }
+
             $(this._listContainerAddRow).css("top", runningY);
+            var addRowHeight = this.is_changelist? 0 : $(this._listContainerAddRow).outerHeight();
+            runningY += addRowHeight;
+            $(this._listContainerAddRow).css("width", header_width);
+
             $(this._listContainer).height(runningY);
-            if(this.is_stacked==true){
-                $(this._listContainer).width(maxW);    
-            }
+
 
         }
         this._checkForRemovedItems = function(){
@@ -509,13 +532,22 @@
             var first_list_item_row = has_items? $(first_list_item).find('.grp-tr, tr') : [];
             var header_columns = $(this._listContainerHeader).find('.grp-th, th');
 
+            // console.log("Found "+header_columns.length+" header columns")            
             
 
-            if(this.is_changelist){
+            if(this.is_stacked){
+
+                //Stacked layouts are as simple as making each item as wide as the header
+                var header_width = $(this._listContainerHeader).outerWidth();
+                for(var k=0; k<this.list_items.length; k++){
+                    var list_item = this.list_items[k];
+                    $(list_item.element).css("width", header_width+"px");
+                }
+                
+            }else{
 
                 for(var k=0; k<this.list_items.length; k++){
                     var list_item = this.list_items[k];
-                    
                     
 
                     var list_item_columns = $(list_item.element).find('td, th');
@@ -523,43 +555,13 @@
                         var list_item_column = list_item_columns[j];
                         var header_column = header_columns[j];
 
-                        var columnWidth = $(header_column).width();
-                        // $(list_item_column).css("width", "100px");
+                        var columnWidth = $(header_column).outerWidth();
                         $(list_item_column).innerWidth(columnWidth)
                     }
                     
                 }
 
-                
-            }else{
-                for(var k=0; k<header_columns.length; k++){
-                    if(has_items){
-                        var first_item_column = first_list_item_columns[k];
-                        var header_column = header_columns[k];
-
-                        var columnWidth = $(first_item_column).width()-1;
-                        if(k==0){
-                            columnWidth += 4;
-                        }
-                        $(header_column).width(columnWidth);
-                        $(header_column).css("display", "inline-block");    
-                    }else{
-                        $(header_column).css("width", "auto");
-                        $(header_column).css("display", "table-cell");
-                    }
-                }
-
-                if(has_items){
-                    var rowWidth = $(first_list_item_row).width();
-                    $(this._container).width(rowWidth);    
-                }else{
-                    $(this._container).css("width", "auto");   
-                }
             }
-            
-
-            
-            
             
         },
 
@@ -571,9 +573,10 @@
             var parent_reference = this;
 
             var list_items = $(element).find(".grp-tbody.grp-empty-form");
-            var header_columns = $(this._listContainerHeader).find('.grp-th');
+            var header_columns = $(this._container).find('th, .grp-th');
             var empty_columns = $(list_items).find('.grp-td');
             
+            // console.log("Found "+header_columns.length+" header columns for sorting")
             for(var k=0; k<header_columns.length; k++){
                 var header_column = header_columns[k];
                 var empty_column = empty_columns[k];
@@ -581,27 +584,18 @@
                 var isColumnInited = $(header_column).hasClass( 'sort-inited' );
                 if(isColumnInited==false){
                     
-                    var columnText = $(header_column).text();
+                    var columnText = $(header_column).text().trim();
                     var sortProperty = columnText;
-                    var classes = $(empty_column).attr('class').split(/\s+/);
-                    var isReadOnly = $(empty_column).find(".grp-readonly").length > 0;
-
-
                     
-                    for(var i=0; i<classes.length; i++){
-                        var class_name = classes[i];
-                        if(class_name!= '' && class_name.indexOf('grp')<0 && class_name.indexOf('required')<0){
-                            sortProperty = class_name;
-                        }
-                    }
-                    var isOrderColumn = sortProperty == this.options['order_by'];
+                    var isDeleteColumn = columnText.toLowerCase().indexOf("delete?") >=0 ;
+                    var isOrderColumn = sortProperty.toLowerCase() == this.options['order_by'].toLowerCase();
 
-                    if(sortProperty != '' && isReadOnly == false && isOrderColumn == false){
-                        var link = '<a href="#'+sortProperty+'">'+columnText+'</a>';
+                    if(isOrderColumn == false && isDeleteColumn == false){
+                        var link = '<a href="#'+sortProperty+'" class="sortable-column">'+columnText+'</a>';
                         $(header_column).html(link);
                     }
                     $(header_column).addClass("sort-inited");
-
+                    
                     $(header_column).find('a').bind("click", function(e){
                         e.preventDefault();
                         var url = e.target.toString();
@@ -612,10 +606,12 @@
                             $(header_columns).find("a").removeClass( 'sort-asc sort-desc' );
                             $(this).addClass( 'sort-desc' );
                             parent_reference._sortItemsByProperty(hash, true);
+                            parent_reference._realignItems(200, "_populateColumnSortLinks ascending");
                         }else{
                             $(header_columns).find("a").removeClass( 'sort-asc sort-desc' );
                             $(this).addClass( 'sort-asc' );
                             parent_reference._sortItemsByProperty(hash, false);
+                            parent_reference._realignItems(200, "_populateColumnSortLinks descending");
                         }
 
                     });
@@ -627,6 +623,7 @@
         
         
         this._initList(element, options);
+
     };
 
 
@@ -680,7 +677,11 @@
             return this._position;
         }
         this.getProperty = function(property){
-            var column = $(this._container).find("."+property);
+            //Uncaplitalize property:
+            property = property.charAt(0).toLowerCase() + property.slice(1);
+
+            var container_selector = "."+property+", .field-"+property;
+            var column = $(this._container).find(container_selector);
             
             var isTextField = $(column).find(".vTextField").length > 0;
             var isTextArea = $(column).find("textarea").length > 0;
@@ -688,13 +689,13 @@
             var isImageUpload = $(column).find(".file-upload").length > 0;
             var isSelect = $(column).find("select").length > 0;
             var isFK = $(column).find("grp-autocomplete-wrapper-fk").length > 0;
+            var hasInput = $(column).find("input").length > 0;
 
             //File upload
             if(isImageUpload){
                 var linkText = $(column).find("a").text();
                 return $(column).find("a").text();
             }
-
            
 
             //fk
@@ -726,8 +727,13 @@
                 return $(column).find("textarea").val();
             }
 
+            //some other kind of input
+            if(hasInput){
+                return $(column).find("input").val();
+            }
+
             //last attempt:
-            return $(column).find("input").val();
+            return $(column).text().trim();
         }
         this.setPositionWhileDragging = function(value){
             //console.log(this.getPosition()+" -> "+value)
@@ -804,7 +810,7 @@
             //Initialize Item:
             //Make form field readonly
             //Add form item buttons      
-            console.log("_initListItem("+item+", "+options+")")
+            // console.log("_initListItem("+item+", "+options+")")
             
             this._originalPositionContainer = null;
             this._inputChangeContainer = null;
@@ -911,7 +917,7 @@
             $(this._buttonContainer).find(".move_bottom").bind("click", function(e){
                 e.preventDefault();
                 if(e.which == 1){
-                    parent_reference.parent_list.moveToBottom(parent_reference);
+                    parent_reference.parent_list.moveToBottom(parent_reference, true);
                 }
             });
 
@@ -1071,7 +1077,7 @@
 
                 var new_id = app_name+"_id_"+($.orderable_admin_list.registered_elements.length);
                 var classes = $(element).attr('class') || "";
-                console.log(element+" "+new_id+" "+config+" classes "+classes)
+                // console.log(element+" "+new_id+" "+config+" classes "+classes)
 
                 // Determine which attribute to use for ordering this item:
                 if(window['custom_list_order_by']!=undefined){

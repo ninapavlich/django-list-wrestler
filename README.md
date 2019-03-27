@@ -131,3 +131,12 @@ class ObjectAdmin(AdminListCollapsible):
 	inlines = [ItemInline, SubItemInline]
 
 ```
+
+
+* Grapelli Support *
+
+To use a version that is skinned to match grappelli, use the following classes:
+
+* AdminListOrderable -> GRPAdminListOrderable
+* TabularInlineOrderable -> GRPTabularInlineOrderable
+* StackedInlineOrderable -> GRPStackedInlineOrderable

@@ -6,19 +6,65 @@
   border: 1px solid #ccc;
   
   background-color:#eee;
-  text-indent: -9999px;
-  width: 26px;
-  height: 20px;
+  /*text-indent: -9999px;*/
+  /*width: 26px;
+  height: 20px;*/
 
+  padding: 4px 8px;
   margin:0;
 }
 .ordering-buttons a:hover{
   background-color:#ddd;          
 }
+
+    
+
+/*.ordering-buttons a.icon{
+  background-image: url(../images/icons-s79f97b581c.png);
+  background-repeat: no-repeat;
+}  */  
 .ordering-buttons a.icon.disabled{
   background-color: rgb(220, 220, 220);
 }
+.django-list-wrestler .icon span{
+  display: none;
+}
 
+.django-list-wrestler .icon:before{
+  font-size: 1.5em;
+}
+.django-list-wrestler .icon.move_top:before, 
+.django-list-wrestler .icon.move_up:before,
+.django-list-wrestler .icon.move_down:before, 
+.django-list-wrestler .icon.move_bottom:before{
+  display: block;
+  transform: rotate(90deg);
+  padding-bottom: 0.1em;
+  text-align: center;
+}
+
+
+.django-list-wrestler .icon.drag{
+  padding: 8px 8px 4px 8px;  
+}
+.django-list-wrestler .icon.drag:before{
+  content:"\2261";
+}
+.django-list-wrestler .icon.move_top:before{
+  content: "\00AB";
+}
+.django-list-wrestler .icon.move_up:before{
+  content:"\2039";
+}
+.django-list-wrestler .icon.move_down:before{
+  content:"\203A";
+}
+.django-list-wrestler .icon.move_bottom:before{
+  content:"\00BB";
+}
+.django-list-wrestler .icon.apply_new_value:before{
+ content:"\203A"; 
+}
 
 
 .ordering-buttons .drag{
@@ -60,33 +106,38 @@
 
 .ordering-buttons .new_value{
   width:30px;
-  height:30px;
+  display: block;
 
   font-size:11px;
   text-align: right;
   -webkit-border-radius: 5px 0px 0px 5px; 
   border-radius: 5px 0px 0px 5px; 
 
-  margin-right:-4px;
+  margin-right:-2px;
   position:static;
+  padding: 6px;
+  height: auto;
 }
 .ordering-buttons .apply_new_value{
-
+  display: block;
 
   -webkit-border-radius: 0px 5px 5px 0px;
   border-radius: 0px 5px 5px 0px;
   
-  width:18px;
-  height:21px;
+  /*width:18px;
+  height:21px;*/
   text-indent: 0;
   font-weight: bold;
-  font-size: 16px;
-  padding: 7px 0 0 8px;
+  /*font-size: 16px;*/
+  /*padding: 7px 0 0 8px;*/
 }
 .ordering-buttons .jump-container{
   min-width: 56px;
 }
-
+.ordering-buttons .jump-container .input_container,
+.ordering-buttons .jump-container .apply_container{
+  float:left;
+}
 
 .ordering-buttons .delete{
   

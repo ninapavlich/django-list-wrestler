@@ -37,8 +37,9 @@
         this.list_items = [];
         this.is_changelist = $('#result_list').length > 0;
         this.is_stacked = $(element).hasClass('django-list-wrestler-stacked');
+        this.is_grappelli = $(element).hasClass('grappelli-skin');
 
-        // console.log("is changelist? "+this.is_changelist+" is stacked? "+this.is_stacked)
+        // console.log("is changelist? "+this.is_changelist+" is stacked? "+this.is_stacked+" is_grappelli? "+this.is_grappelli)
         
         //CONFIG:
         this.on_item_change_callback = this.options.onItemChangePosition;
@@ -289,11 +290,13 @@
                 return;
             }
             this._listContainer = $(this.list_items[0].element).parent();
-            this._listContainerHeader = this.is_stacked? $(this._container).find("h2") : $(this._container).find("thead tr");  
+            this._listContainerHeader = (this.is_stacked || this.is_grappelli)? $(this._container).find("h2") : $(this._container).find("thead tr");  
             this._listContainerAddRow = $(this._listContainer).find(".add-row");
 
             this._alignColumns();
-            this._populateColumnSortLinks();
+
+            // TODO -- fix column name determination
+            // this._populateColumnSortLinks();
         };
         this._initListEvents = function(container) {
             if(this.is_changelist==true){
@@ -486,7 +489,7 @@
             }
 
             var header_width = $(this._listContainerHeader).outerWidth();
-            var runningY = this.is_stacked? $(this._listContainerHeader).outerHeight() : 0;
+            var runningY = (this.is_stacked || this.is_grappelli)? $(this._listContainerHeader).outerHeight() : 0;
             var maxW = 0;
             for(var k=0; k<this.list_items.length; k++){
 
@@ -677,6 +680,8 @@
             return this._position;
         }
         this.getProperty = function(property){
+
+            // console.log("getProperty: "+property)
             //Uncaplitalize property:
             property = property.charAt(0).toLowerCase() + property.slice(1);
 

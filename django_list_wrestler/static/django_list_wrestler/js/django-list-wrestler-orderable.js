@@ -1,4 +1,4 @@
-//author:nina@cgpartnersllc.com
+//author:nina@ninalp.com
 ;django.jQuery(document).ready(function() {
 
     //Initialize Form:
@@ -50,7 +50,7 @@
         this.request_update_timeout_duration = 1;
 
         this.realign_interval;
-        this.realign_interval_duration = 10000000;
+        this.realign_interval_duration = 10000000; //TODO -- should we disable this?
 
         this.drag_offset_x = 0;
         this.drag_offset_y = 0;

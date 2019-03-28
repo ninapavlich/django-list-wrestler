@@ -6,6 +6,9 @@ Make django admin lists easier to sort and collapse.
 This plugin turns an ordinary order field into a high-powered sorting and collapsing tool including:
 
 Add sorting functionality to both change list views and inline list views, including:
+
+![Screenshot of changelist with all controls](/../master/docs/screenshots/changelist_full.png?raw=true "Screenshot of changelist with all controls")
+
 * Drag-and-Drop re-ordering
 * Jump to Top and Jump to Bottom buttons
 * Jump one up and Jump one bottom
@@ -20,6 +23,8 @@ For inline lists:
 For change lists:
 * Add collapsing functionality to a changelist view to mimic the functionality of a tree folder structure.
 
+![Screenshot of changelist with tree widget enabled and open](/../master/docs/screenshots/path_collapse_open.png?raw=true "Screenshot of changelist with tree widget enabled and open")
+
 
 Requirements
 =====
@@ -31,12 +36,14 @@ Usage
 2. Add 'django_list_wrestler' to your INSTALLED_APPS list in your project's settings.py
 3. Customize your admin definition following the examples below:
 
-* Inline Sorting Example *
+### Inline Sorting Example
 
 Inline list, with all the sorting options turned on:
+
 ![Screenshot of Django inline items](/../master/docs/screenshots/screenshot.png?raw=true "Screenshot of Tabular Inline Items")
 
 Inline list, with only simplified control:
+
 ![Screenshot of Django inline items](/../master/docs/screenshots/simplified.png?raw=true "Screenshot of simplified Inline Items")
 
 ```python
@@ -72,18 +79,22 @@ class SubItemInline(TabularInlineOrderable):
 ```
 
 
-* Change List Sorting Example *
+### Change List Sorting Example
 
 Allow sorting within the change list, turning a basic integer field into a drag and drop or push-button sortable widget.
 
 The raw ordering field:
+
 ![Screenshot of changelist without sorting](/../master/docs/screenshots/changelist_raw.png?raw=true "Screenshot of changelist without sorting")
 
 With Dragging and Jumping:
+
 ![Screenshot of changelist with dragging and jumping](/../master/docs/screenshots/changelist_drag.png?raw=true "Screenshot of changelist with dragging and jumping")
 
 With the whole kitchen sink of controls:
+
 ![Screenshot of changelist with all controls](/../master/docs/screenshots/changelist_full.png?raw=true "Screenshot of changelist with all controls")
+
 
 ```python
 from django_list_wrestler.admin import AdminListOrderable
@@ -115,7 +126,7 @@ class ObjectAdmin(AdminListOrderable):
 
 
 
-* Collapsing Tree Change List Example *
+### Collapsing Tree Change List Example
 
 Allow folder-style tree collapsling within the change list, turning a basic uri path (/path/to/item/) into a collapsing tree widget.
 
@@ -123,7 +134,9 @@ The raw hierarchical path field in the changelist:
 ![Screenshot of a raw path field](/../master/docs/screenshots/path_raw.png?raw=true "Screenshot of a raw path field")
 
 With tree widget enabled:
-![Screenshot of changelist with tree widget enabled](/../master/docs/screenshots/path_collapse.png?raw=true "Screenshot of changelist with tree widget enabled")
+![Screenshot of changelist with tree widget enabled and open](/../master/docs/screenshots/path_collapse_open.png?raw=true "Screenshot of changelist with tree widget enabled and open")
+
+![Screenshot of changelist with tree widget enabled and closed](/../master/docs/screenshots/path_collapse_closed.png?raw=true "Screenshot of changelist with tree widget enabled and closed")
 
 ```python
 import sys
@@ -156,14 +169,10 @@ class ObjectAdmin(AdminListCollapsible):
 	# It's also helpful to display all or more of the items, 
 	# since we are now nesting them:
 	list_per_page = sys.maxsize
-
-    
-
-
 ```
 
 
-* Grapelli Support *
+### Grapelli Support
 
 To use a version that is skinned to match grappelli, use the following classes:
 

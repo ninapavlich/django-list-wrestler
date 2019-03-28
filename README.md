@@ -7,7 +7,7 @@ This plugin turns an ordinary order field into a high-powered sorting and collap
 
 Add sorting functionality to both change list views and inline list views, including:
 
-![Screenshot of changelist with all controls](/../master/docs/screenshots/changelist_full.png?raw=true "Screenshot of changelist with all controls")
+![Screenshot of changelist with drag controls](/../master/docs/screenshots/changelist_drag.png?raw=true "Screenshot of changelist with drag controls")
 
 * Drag-and-Drop re-ordering
 * Jump to Top and Jump to Bottom buttons

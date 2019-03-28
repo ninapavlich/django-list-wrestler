@@ -1,7 +1,7 @@
-.django-list-wrestler a.icon.disabled{
+.django-list-wrestler-orderable a.icon.disabled{
   background-color: #efefef;
 }
-.django-list-wrestler a.icon{
+.django-list-wrestler-orderable a.icon{
   font-size: 13px;
   border-radius: 4px;
   background: #f8f8f8;
@@ -13,90 +13,90 @@
   border:1px solid #ddd;
 
 }
-.django-list-wrestler a.icon:hover{
+.django-list-wrestler-orderable a.icon:hover{
   background: #ddd;
   text-decoration: none;
 }
-.django-list-wrestler a.icon:active{
+.django-list-wrestler-orderable a.icon:active{
   background: #79aec8;
   border-color: #79aec8;
   color:#fff;
 }
-.django-list-wrestler .icon span{
+.django-list-wrestler-orderable .icon span{
   display:none;
 }
-.django-list-wrestler .icon:before{
+.django-list-wrestler-orderable .icon:before{
   font-size: 1.5em;
 }
 
 
-.django-list-wrestler .icon.move_top, 
-.django-list-wrestler .icon.move_up,
-.django-list-wrestler .icon.move_down, 
-.django-list-wrestler .icon.move_bottom{
+.django-list-wrestler-orderable .icon.move_top, 
+.django-list-wrestler-orderable .icon.move_up,
+.django-list-wrestler-orderable .icon.move_down, 
+.django-list-wrestler-orderable .icon.move_bottom{
   padding: 0 8px 0 7px;
 }
-.django-list-wrestler .icon.move_top:before, 
-.django-list-wrestler .icon.move_up:before,
-.django-list-wrestler .icon.move_down:before, 
-.django-list-wrestler .icon.move_bottom:before{
+.django-list-wrestler-orderable .icon.move_top:before, 
+.django-list-wrestler-orderable .icon.move_up:before,
+.django-list-wrestler-orderable .icon.move_down:before, 
+.django-list-wrestler-orderable .icon.move_bottom:before{
   display: block;
   transform: rotate(90deg);
   padding-bottom: 0.25em;
   text-align: center;
 }
 
-.django-list-wrestler .icon.move_top{
+.django-list-wrestler-orderable .icon.move_top{
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
   border-bottom-width: 0;
 }
-.django-list-wrestler .icon.move_up,
-.django-list-wrestler .icon.move_down{
+.django-list-wrestler-orderable .icon.move_up,
+.django-list-wrestler-orderable .icon.move_down{
   border-radius: 0;
   border-bottom-width: 0;
 }
 
-.django-list-wrestler .icon.move_bottom{
+.django-list-wrestler-orderable .icon.move_bottom{
   border-top-right-radius: 0;
   border-top-left-radius: 0;
   
 }
-.django-list-wrestler .icon.drag:before{
+.django-list-wrestler-orderable .icon.drag:before{
   content:"\2261";
 }
-.django-list-wrestler .icon.move_top:before{
+.django-list-wrestler-orderable .icon.move_top:before{
   content: "\00AB";
 }
-.django-list-wrestler .icon.move_up:before{
+.django-list-wrestler-orderable .icon.move_up:before{
   content:"\2039";
 }
-.django-list-wrestler .icon.move_down:before{
+.django-list-wrestler-orderable .icon.move_down:before{
   content:"\203A";
 }
-.django-list-wrestler .icon.move_bottom:before{
+.django-list-wrestler-orderable .icon.move_bottom:before{
   content:"\00BB";
 }
-.django-list-wrestler .icon.apply_new_value:before{
+.django-list-wrestler-orderable .icon.apply_new_value:before{
  content:"\203A"; 
 }
 
 
-.django-list-wrestler .ordering-buttons .new_value{
+.django-list-wrestler-orderable .ordering-buttons .new_value{
   width: 1.75em;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   padding: 4px;
   margin-bottom: 0;
 }
-.django-list-wrestler .ordering-buttons .jump-container .input_container,
-.django-list-wrestler .ordering-buttons .jump-container .apply_container{
+.django-list-wrestler-orderable .ordering-buttons .jump-container .input_container,
+.django-list-wrestler-orderable .ordering-buttons .jump-container .apply_container{
   float:left;
 }
-.django-list-wrestler .ordering-buttons .jump-container{
+.django-list-wrestler-orderable .ordering-buttons .jump-container{
   min-width: 60px;
 }
-.django-list-wrestler .ordering-buttons .jump-container .apply_container a{
+.django-list-wrestler-orderable .ordering-buttons .jump-container .apply_container a{
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-left:0;
@@ -104,14 +104,14 @@
   padding: 2px 8px 5px 8px;
 }
 
-.django-list-wrestler .sortable-column{
+.django-list-wrestler-orderable .sortable-column{
   color:#79aec8;
   text-decoration: underline;
 }
 
-.django-list-wrestler .sortable-column.sort-asc:after{
+.django-list-wrestler-orderable .sortable-column.sort-asc:after{
   content:" \25b2";
 }
-.django-list-wrestler .sortable-column.sort-desc:after{
+.django-list-wrestler-orderable .sortable-column.sort-desc:after{
   content:" \25bc";
 }

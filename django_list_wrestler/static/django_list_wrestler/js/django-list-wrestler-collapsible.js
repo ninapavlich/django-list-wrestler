@@ -32,11 +32,6 @@
         this._container = element;
         this.list_items = [];
         this.list_column_items = [];
-        this.is_grappelli = $(element).hasClass('grappelli-skin');
-
-        // console.log("is changelist? "+this.is_changelist+" is stacked? "+this.is_stacked+" is_grappelli? "+this.is_grappelli)
-        
-
         this.list_item_rows = [];
         
         
@@ -48,14 +43,7 @@
             return '6.0';
         }
         
-        this.closeTree = function(item){
-            console.log("closeTree")
-            
-        }
-        this.openTree = function(item, request_update){
-            console.log("openTree")
-           
-        }
+  
 
         /////////////////////////////////
         //PRIVATE FUNCTIONS /////////////
@@ -75,6 +63,8 @@
                 var container_selector = "."+this.options['order_by']+", .field-"+this.options['order_by'];
                 var container = $(list_item).find(container_selector);
                 this.list_column_items.push(container);
+
+                // console.log("FIELD? "+container.length+" selector "+container_selector+" order_by "+this.options['order_by'])
                 
                 is_initialized = $(list_item).hasClass( 'list-item-initialized' )
                 
@@ -90,6 +80,8 @@
                     var id = path_pieces[path_pieces.length-1]
                     $(container).attr("data-id", id);
                     $(container).attr("data-path", path);
+
+                    // console.log("ID is "+id+" path is "+path)
                     
                     var running_path = "";
                     for( var j=0; j < path_pieces.length-1; j++ ){
@@ -214,7 +206,7 @@
 
                 var new_id = app_name+"_id_"+($.collapsible_admin_list.registered_elements.length);
                 var classes = $(element).attr('class') || "";
-                console.log(element+" "+new_id+" "+config+" classes "+classes)
+                // console.log(element+" "+new_id+" "+config+" classes "+classes)
 
 
                 // Determine which attribute to use for ordering this item:

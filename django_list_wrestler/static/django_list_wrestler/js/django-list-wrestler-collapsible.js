@@ -30,16 +30,11 @@
         this.options = $.extend({}, $.collapsible_admin_list.defaultOptions, options); 
 
         this._container = element;
-        this._listContainer = null;
-        this._listContainerHeader = null;
-        this._listContainerAddRow = null;
-        this.list_item_hash = {};
         this.list_items = [];
-        this.is_changelist = $('#result_list').length > 0;
-        this.is_stacked = $(element).hasClass('django-list-wrestler-stacked');
+        this.list_column_items = [];
         this.is_grappelli = $(element).hasClass('grappelli-skin');
 
-        console.log("is changelist? "+this.is_changelist+" is stacked? "+this.is_stacked+" is_grappelli? "+this.is_grappelli)
+        // console.log("is changelist? "+this.is_changelist+" is stacked? "+this.is_stacked+" is_grappelli? "+this.is_grappelli)
         
 
         this.list_item_rows = [];
@@ -69,42 +64,120 @@
         //LISTS//
         this._initList = function(element, options) {  
             
-            
-            var list_items = this.is_changelist? $(element).find("tbody > tr") : $(element).find(".has_original, [class*='dynamic']");
-            console.log("Found "+list_items.length+" list items in list "+this.id)
+            this.list_items = $(element).find("tbody > tr");
 
+            // console.log("FOUND "+this.list_items.length+" list items")
 
-            // for( var k=0; k < list_items.length; k++ ){
-            //     var list_item = list_items[k];
+            for( var k=0; k < this.list_items.length; k++ ){
+                var list_item = this.list_items[k];
                 
 
-
-            //     is_initialized = $(list_item).hasClass( 'list-item-initialized' )
+                var container_selector = "."+this.options['order_by']+", .field-"+this.options['order_by'];
+                var container = $(list_item).find(container_selector);
+                this.list_column_items.push(container);
                 
-            //     if(is_initialized){
-            //         //carry on
+                is_initialized = $(list_item).hasClass( 'list-item-initialized' )
+                
+                if(is_initialized){
+                    //carry on
                     
-            //     }else{
+                }else{
                     
-            //         var new_id = this.id+"_"+(this.list_items.length);
-            //         var component = new $.collapsible_admin_list_item(list_item, new_id, this, options); 
+                    $(container).addClass( 'collapsible' );
+                    var path = $(container).text().replace(/^\/|\/$/g, '');
+                
+                    var path_pieces = path.split("/");
+                    var id = path_pieces[path_pieces.length-1]
+                    $(container).attr("data-id", id);
+                    $(container).attr("data-path", path);
                     
-            //         this.moveToBottom(component, false);
+                    var running_path = "";
+                    for( var j=0; j < path_pieces.length-1; j++ ){
+                        var path_piece = path_pieces[j];
+                        running_path += path_piece
+                        $(container).addClass("child-of-"+running_path);
+                        running_path += "_"
+                    }
 
-            //         $(list_item).addClass( 'list-item-initialized' );  
-            //         $(list_item).addClass( new_id );
+                    if(path_pieces.length == 1){
+                        $(container).addClass("root");
+                    }
 
-            //         this.list_item_hash[new_id] = component;
-            //         this.list_items.push(component);
-            //     }
+                    $(container).addClass("indent-"+path_pieces.length);
 
-            // }
+                    $(container).find("a").text(id);
+                    $(container).prepend(this._createButtons());
 
-            
 
-            
+                    var self = this;
+                    $(container).find(".toggle-handler").bind("click", function(e){
+                        e.preventDefault();
+                        $(this).toggleClass("closed");                        
+                        self._renderItems();
+                    })
+
+                    $(list_item).addClass( 'list-item-initialized' );
+
+                }
+
+            }
+
+
+            for( var k=0; k < this.list_column_items.length; k++ ){
+                var list_column_item = this.list_column_items[k];
+                var item_id = $(list_column_item).attr("data-path");
+
+
+                
+                var children_selector = ".child-of-"+item_id.replace(/\//g, "_");
+                var total_children = $(this._container).find(children_selector);
+                // console.log("FOUND "+total_children.length+" children of "+item_id+" with selector "+children_selector)
+                if(total_children.length == 0){
+                    $(list_column_item).addClass("leaf");
+                }
+
+            }
+
+
+
+            this._renderItems();
 
         };
+
+
+        this._renderItems = function(){
+
+            for( var k=0; k < this.list_column_items.length; k++ ){
+                var list_column_item = this.list_column_items[k];
+
+                var item_id = $(list_column_item).attr("data-path");
+                var is_closed = $(list_column_item).find(".toggle-handler").hasClass("closed")
+                var is_leaf = $(list_column_item).hasClass("leaf");
+                if(!is_leaf){
+
+                    // console.log("is "+item_id+" is_closed? "+is_closed)
+
+                    var children_selector = ".child-of-"+item_id.replace(/\//g, "_");
+
+                    if(is_closed){
+                        $(this._container).find(children_selector).parent().addClass("collapsed");
+                    }else{
+                        $(this._container).find(children_selector).parent().removeClass("collapsed");
+                    }
+
+                }
+                
+
+
+            }
+
+        }
+
+
+
+        this._createButtons = function(){
+            return '<a href="#" title="Toggle Open" class="icon toggle-handler closed" ><span>Toggle</span></a>'
+        }
         
         
         this._initList(element, options);
@@ -118,13 +191,14 @@
     /* INITIALIZATION */
     $.init_collapsible_admin_lists = function(config) { //Using only one method off of $.fn  
         
-        app_name = "django-list-wrestler";
+        app_name = "django-list-wrestler-collapsible";
+
 
         var changelist_selector = "#result_list";
         var inline_item_selector = "."+app_name+":not(.inline-related)";
         app_selector = changelist_selector+", "+inline_item_selector;
         all_elements = $(document).find(app_selector);
-        console.log("FOUND "+all_elements.length+" items with selector: "+app_selector)
+        // console.log("FOUND "+all_elements.length+" items with selector: "+app_selector)
         //for each element, check to see if it has been initialized
 
 
@@ -141,6 +215,22 @@
                 var new_id = app_name+"_id_"+($.collapsible_admin_list.registered_elements.length);
                 var classes = $(element).attr('class') || "";
                 console.log(element+" "+new_id+" "+config+" classes "+classes)
+
+
+                // Determine which attribute to use for ordering this item:
+                if(window['custom_list_order_by']!=undefined){
+                    config['order_by'] = window['custom_list_order_by'];
+                }
+
+                var order_by_value = config['order_by'];
+                var class_names = classes.split(' ');
+                for(index in class_names){
+                    class_name = class_names[index]
+                    if(class_name.indexOf("order-by-")>=0){
+                        order_by_value = class_name.split("order-by-")[1];
+                        config['order_by'] = order_by_value;
+                    }
+                }
 
                
 
@@ -163,8 +253,7 @@
     $.collapsible_admin_list.registered_elements = []
     
     $.init_collapsible_admin_lists({
-        'order_by' : 'order'
-
+        'order_by' : 'path'
     });
     
 });

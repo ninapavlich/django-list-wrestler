@@ -39,7 +39,7 @@ class BaseAdminListOrderable(admin.ModelAdmin):
 
 	def changelist_view(self, request, extra_context=None):
 		extra_context = extra_context or {}
-		extra_context['ORDER_BY'] = self.custom_list_order_by or 'order'
+		extra_context['ORDER_BY'] = self.custom_list_order_by or 'path'
 		extra_context['custom_list_settings'] = self.get_custom_list_settings()
 		
 		return super(BaseAdminListOrderable, self).changelist_view(request, extra_context=extra_context)
@@ -56,19 +56,19 @@ class GRPAdminListOrderable(GRPMediaMixin, BaseAdminListOrderable):
 
 class BaseTabularInlineOrderable(admin.TabularInline):
 
-	classes = ['django-list-wrestler'] 
+	classes = ['django-list-wrestler', 'django-list-wrestler-orderable'] 
 	extra = 0
 
 class TabularInlineOrderable(GRPMediaMixin, BaseTabularInlineOrderable):
 	pass
 
 class GRPTabularInlineOrderable(GRPMediaMixin, BaseTabularInlineOrderable):
-	classes = ['django-list-wrestler', 'grappelli-skin'] 
+	classes = ['django-list-wrestler', 'django-list-wrestler-orderable', 'grappelli-skin'] 
 
 
 class BaseStackedInlineOrderable(admin.StackedInline):
 	
-	classes = ['django-list-wrestler', 'django-list-wrestler-stacked'] 
+	classes = ['django-list-wrestler', 'django-list-wrestler-orderable', 'django-list-wrestler-stacked'] 
 	extra = 0
 
 
@@ -77,7 +77,7 @@ class StackedInlineOrderable(GRPMediaMixin, BaseStackedInlineOrderable):
 
 class GRPStackedInlineOrderable(GRPMediaMixin, BaseStackedInlineOrderable):
 	
-	classes = ['django-list-wrestler', 'django-list-wrestler-stacked', 'grappelli-skin'] 
+	classes = ['django-list-wrestler', 'django-list-wrestler-orderable', 'django-list-wrestler-stacked', 'grappelli-skin'] 
 
 
 
@@ -116,11 +116,11 @@ class BaseAdminListCollapsible(admin.ModelAdmin):
 	def get_custom_list_settings(self):
 		if hasattr(self, 'custom_list_settings'):
 			return self.custom_list_settings
-		return []
+		return ['django-list-wrestler']
 
 	def changelist_view(self, request, extra_context=None):
 		extra_context = extra_context or {}
-		extra_context['ORDER_BY'] = ""
+		extra_context['ORDER_BY'] = self.custom_list_order_by or 'order'
 		extra_context['custom_list_settings'] = self.get_custom_list_settings()
 		
 		return super(BaseAdminListCollapsible, self).changelist_view(request, extra_context=extra_context)

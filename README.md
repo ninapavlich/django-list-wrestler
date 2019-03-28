@@ -121,14 +121,20 @@ from .models import *
 class ObjectAdmin(AdminListCollapsible):
 	"""
 	To bring collapsing tree functionality to a changelist view:
+
+	where path is something like a tree path:
+	- /root/
+	- /root/child/
+	- /root/child/grandchild/
+
 	"""
 	model = Object
-	fields = ('priority', 'title')
-	list_editable = ('priority',)
+	
+	list_display = ('path', 'title')
+	list_display_links = ('path',)
 
-    custom_list_order_by = 'priority'
+    custom_list_order_by = 'path'
 
-	inlines = [ItemInline, SubItemInline]
 
 ```
 
@@ -140,3 +146,4 @@ To use a version that is skinned to match grappelli, use the following classes:
 * AdminListOrderable -> GRPAdminListOrderable
 * TabularInlineOrderable -> GRPTabularInlineOrderable
 * StackedInlineOrderable -> GRPStackedInlineOrderable
+* AdminListCollapsible -> GRPAdminListCollapsible

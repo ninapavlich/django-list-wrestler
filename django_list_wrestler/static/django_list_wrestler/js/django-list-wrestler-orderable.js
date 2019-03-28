@@ -1060,7 +1060,7 @@
     /* INITIALIZATION */
     $.init_orderable_admin_lists = function(config) { //Using only one method off of $.fn  
         
-        app_name = "django-list-wrestler";
+        app_name = "django-list-wrestler-orderable";
 
         var changelist_selector = "#result_list";
         var inline_item_selector = "."+app_name+":not(.inline-related)";

@@ -1,0 +1,60 @@
+
+
+
+.django-list-wrestler-collapsible a.toggle-handler{
+  display: inline;
+  border: 1px solid #ddd;
+  padding: 0.25em 0.5em 0.125em 0.5em;
+  margin-right: 0.25em;
+  border-radius: 0.25em;
+}
+.django-list-wrestler-collapsible a.toggle-handler span{
+  display:none;
+}
+.django-list-wrestler-collapsible a.toggle-handler:not(.closed):before{
+  content:"\002d";
+}
+.django-list-wrestler-collapsible a.toggle-handler.closed:before{
+  content:"\002b";
+}
+.django-list-wrestler-collapsible .leaf a.toggle-handler{
+  display:none;
+}
+
+
+.django-list-wrestler-collapsible .collapsible.indent-1{
+  padding-left:1em;
+}
+.django-list-wrestler-collapsible .collapsible.indent-2{
+  padding-left:2em;
+}
+.django-list-wrestler-collapsible .collapsible.indent-3{
+  padding-left:3em;
+}
+.django-list-wrestler-collapsible .collapsible.indent-4{
+  padding-left:4em;
+}
+.django-list-wrestler-collapsible .collapsible.indent-5{
+  padding-left:5em;
+}
+.django-list-wrestler-collapsible .collapsible.indent-6{
+  padding-left:6em;
+}
+.django-list-wrestler-collapsible .collapsible.indent-7{
+  padding-left:7em;
+}
+.django-list-wrestler-collapsible .collapsible.indent-8{
+  padding-left:8em;
+}
+.django-list-wrestler-collapsible .collapsible.indent-9{
+  padding-left:9em;
+}
+.django-list-wrestler-collapsible .collapsible.indent-10{
+  padding-left:10em;
+}
+
+
+.django-list-wrestler-collapsible .list-item-initialized.collapsed{
+  display: none;
+}
+

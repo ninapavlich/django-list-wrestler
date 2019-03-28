@@ -1,3 +1,9 @@
+.django-list-wrestler-collapsible a.toggle-handler {
+    padding: 0 0.5em;
+}
+.django-list-wrestler-collapsible a.toggle-handler:focus{
+  text-decoration: none;
+}
 .django-list-wrestler-collapsible .collapsible.indent-1{
   padding-left:0em;
 }

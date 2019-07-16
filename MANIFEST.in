@@ -4,4 +4,4 @@ include CHANGELOG.rst
 include README.md
 include django_list_wrestler/static/django_list_wrestler/css/django-list-wrestler.css
 include django_list_wrestler/static/django_list_wrestler/js/django-list-wrestler.js
-recursive-include django_list_wrestler/ *.py *.css *.js
+recursive-include django_list_wrestler/ *.py *.css *.js *.png

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 # this is a test
 setup(name='django-list-wrestler',
       description='Make django admin lists easier to sort and collapse.',
-      version='6.1',
+      version='6.2',
       url='https://github.com/ninapavlich/django-list-wrestler',
       author='Nina Pavlich',
       author_email='nina@ninalp.com',

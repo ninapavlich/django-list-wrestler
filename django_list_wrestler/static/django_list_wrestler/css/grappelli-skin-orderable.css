@@ -19,10 +19,6 @@
 
     
 
-/*.ordering-buttons a.icon{
-  background-image: url(../images/icons-s79f97b581c.png);
-  background-repeat: no-repeat;
-}  */  
 .ordering-buttons a.icon.disabled{
   background-color: rgb(220, 220, 220);
 }
